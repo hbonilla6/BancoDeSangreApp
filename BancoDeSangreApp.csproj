@@ -47,7 +47,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Business\AuditoriaBLL.cs" />
+    <Compile Include="Business\InventarioBLL.cs" />
     <Compile Include="Business\SeguridadBLL.cs" />
+    <Compile Include="Business\SolicitudMedicaBLL.cs" />
     <Compile Include="Business\UsuarioBLL.cs" />
     <Compile Include="Components\LoadingOverlay.cs">
       <SubType>Component</SubType>
@@ -59,11 +62,29 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmAsignarDonaciones.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmAsignarDonaciones.Designer.cs">
+      <DependentUpon>FrmAsignarDonaciones.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmAuditoria.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmAuditoria.Designer.cs">
+      <DependentUpon>FrmAuditoria.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmDashboard.Designer.cs">
       <DependentUpon>FrmDashboard.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmInventario.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmInventario.Designer.cs">
+      <DependentUpon>FrmInventario.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmLogin.cs">
       <SubType>Form</SubType>
@@ -83,14 +104,42 @@
     <Compile Include="Forms\FrmRegistro.Designer.cs">
       <DependentUpon>FrmRegistro.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmSolicitudesMedicas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmSolicitudesMedicas.Designer.cs">
+      <DependentUpon>FrmSolicitudesMedicas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\SolicitudMedica.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmAsignarDonaciones.resx">
+      <DependentUpon>FrmAsignarDonaciones.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmAuditoria.resx">
+      <DependentUpon>FrmAuditoria.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmDashboard.resx">
+      <DependentUpon>FrmDashboard.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmInventario.resx">
+      <DependentUpon>FrmInventario.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmRegistro.resx">
+      <DependentUpon>FrmRegistro.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmSolicitudesMedicas.resx">
+      <DependentUpon>FrmSolicitudesMedicas.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -381,5 +381,10 @@ namespace BancoDeSangreApp.Forms
             timerActualizacion?.Dispose();
             base.OnFormClosing(e);
         }
+
+        private void lblTitulo_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

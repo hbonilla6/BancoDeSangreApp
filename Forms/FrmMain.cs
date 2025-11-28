@@ -28,15 +28,13 @@ namespace BancoDeSangreApp.Forms
 
         private void ConfigurarEventosMenu()
         {
-            // Configurar solo el botón Dashboard (el único que existe)
+            // Configurar todos los botones del menú
             ConfigurarHoverBoton(btnDashboard);
-
-            // Descomentar según agregues los botones en el Designer:
-            // ConfigurarHoverBoton(btnDonantes);
-            // ConfigurarHoverBoton(btnDonaciones);
-            // ConfigurarHoverBoton(btnInventario);
-            // ConfigurarHoverBoton(btnSolicitudes);
-            // ConfigurarHoverBoton(btnReportes);
+            ConfigurarHoverBoton(btnDonantes);
+            ConfigurarHoverBoton(btnDonaciones);
+            ConfigurarHoverBoton(btnInventario);
+            ConfigurarHoverBoton(btnSolicitudes);
+            ConfigurarHoverBoton(btnReportes);
 
             // Configurar botón de cerrar sesión
             if (btnCerrarSesion != null)
@@ -153,41 +151,108 @@ namespace BancoDeSangreApp.Forms
             boton.BackColor = Color.FromArgb(51, 122, 183);
         }
 
+        // ==================== EVENTOS DE BOTONES ====================
+
         private async void btnDashboard_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnDashboard);
             await AbrirFormularioAsync<FrmDashboard>("Cargando Dashboard...");
         }
 
-        //private async void btnDonantes_Click(object sender, EventArgs e)
-        //{
-        //    ActivarBoton(btnDonantes);
-        //    await AbrirFormularioAsync<FrmDonantes>("Cargando Donantes...");
-        //}
+        private async void btnDonantes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnDonantes);
+            // TODO: Cambiar por el formulario real cuando esté disponible
+            MessageBox.Show(
+                "Módulo de Donantes\n\n" +
+                "Este módulo permite gestionar:\n" +
+                "• Registro de nuevos donantes\n" +
+                "• Búsqueda y edición de donantes\n" +
+                "• Historial de donaciones\n" +
+                "• Estado de elegibilidad",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+            // Descomentar cuando tengas el formulario:
+            // await AbrirFormularioAsync<FrmDonantes>("Cargando Donantes...");
+        }
 
-        //private async void btnDonaciones_Click(object sender, EventArgs e)
-        //{
-        //    ActivarBoton(btnDonaciones);
-        //    await AbrirFormularioAsync<FrmDonaciones>("Cargando Donaciones...");
-        //}
+        private async void btnDonaciones_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnDonaciones);
+            // TODO: Cambiar por el formulario real cuando esté disponible
+            MessageBox.Show(
+                "Módulo de Donaciones\n\n" +
+                "Este módulo permite gestionar:\n" +
+                "• Registrar nuevas donaciones\n" +
+                "• Asignar tipo de sangre\n" +
+                "• Control de fechas de vencimiento\n" +
+                "• Seguimiento de unidades",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+            // Descomentar cuando tengas el formulario:
+            // await AbrirFormularioAsync<FrmDonaciones>("Cargando Donaciones...");
+        }
 
-        //private async void btnInventario_Click(object sender, EventArgs e)
-        //{
-        //    ActivarBoton(btnInventario);
-        //    await AbrirFormularioAsync<FrmInventario>("Cargando Inventario...");
-        //}
+        private async void btnInventario_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnInventario);
+            // TODO: Cambiar por el formulario real cuando esté disponible
+            MessageBox.Show(
+                "Módulo de Inventario\n\n" +
+                "Este módulo permite gestionar:\n" +
+                "• Stock por tipo de sangre\n" +
+                "• Alertas de inventario bajo\n" +
+                "• Unidades próximas a vencer\n" +
+                "• Movimientos de entrada/salida",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+            // Descomentar cuando tengas el formulario:
+            // await AbrirFormularioAsync<FrmInventario>("Cargando Inventario...");
+        }
 
-        //private async void btnSolicitudes_Click(object sender, EventArgs e)
-        //{
-        //    ActivarBoton(btnSolicitudes);
-        //    await AbrirFormularioAsync<FrmSolicitudes>("Cargando Solicitudes...");
-        //}
+        private async void btnSolicitudes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnSolicitudes);
+            // TODO: Cambiar por el formulario real cuando esté disponible
+            MessageBox.Show(
+                "Módulo de Solicitudes Médicas\n\n" +
+                "Este módulo permite gestionar:\n" +
+                "• Crear nuevas solicitudes\n" +
+                "• Asignar prioridades\n" +
+                "• Aprobar o rechazar solicitudes\n" +
+                "• Historial de solicitudes",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+            // Descomentar cuando tengas el formulario:
+            // await AbrirFormularioAsync<FrmSolicitudes>("Cargando Solicitudes...");
+        }
 
-        //private async void btnReportes_Click(object sender, EventArgs e)
-        //{
-        //    ActivarBoton(btnReportes);
-        //    await AbrirFormularioAsync<FrmReportes>("Generando Reportes...");
-        //}
+        private async void btnReportes_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnReportes);
+            // TODO: Cambiar por el formulario real cuando esté disponible
+            MessageBox.Show(
+                "Módulo de Reportes\n\n" +
+                "Este módulo permite generar:\n" +
+                "• Reportes de donaciones\n" +
+                "• Estadísticas de inventario\n" +
+                "• Gráficos de tendencias\n" +
+                "• Exportación a PDF/Excel",
+                "Información",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+            );
+            // Descomentar cuando tengas el formulario:
+            // await AbrirFormularioAsync<FrmReportes>("Generando Reportes...");
+        }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
         {

@@ -34,53 +34,38 @@ namespace BancoDeSangreApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-
             this.panelTop = new System.Windows.Forms.Panel();
-            this.lblTitulo = new System.Windows.Forms.Label();
-            this.lblUltimaActualizacion = new System.Windows.Forms.Label();
             this.btnRefrescar = new System.Windows.Forms.Button();
-
-            // Panel de estadísticas principales
+            this.lblUltimaActualizacion = new System.Windows.Forms.Label();
+            this.lblTitulo = new System.Windows.Forms.Label();
             this.panelEstadisticas = new System.Windows.Forms.Panel();
             this.tableLayoutEstadisticas = new System.Windows.Forms.TableLayoutPanel();
-
             this.panelDonantes = new System.Windows.Forms.Panel();
             this.lblTotalDonantes = new System.Windows.Forms.Label();
             this.lblTituloDonantes = new System.Windows.Forms.Label();
-
             this.panelDonaciones = new System.Windows.Forms.Panel();
             this.lblTotalDonaciones = new System.Windows.Forms.Label();
             this.lblTituloDonaciones = new System.Windows.Forms.Label();
-
             this.panelSolicitudes = new System.Windows.Forms.Panel();
             this.lblSolicitudesPendientes = new System.Windows.Forms.Label();
             this.lblTituloSolicitudes = new System.Windows.Forms.Label();
-
             this.panelPorVencer = new System.Windows.Forms.Panel();
             this.lblUnidadesPorVencer = new System.Windows.Forms.Label();
             this.lblTituloPorVencer = new System.Windows.Forms.Label();
-
-            // DataGridViews
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabInventario = new System.Windows.Forms.TabPage();
             this.dgvInventario = new System.Windows.Forms.DataGridView();
-
             this.tabSolicitudes = new System.Windows.Forms.TabPage();
             this.dgvSolicitudes = new System.Windows.Forms.DataGridView();
-
             this.tabDonaciones = new System.Windows.Forms.TabPage();
             this.dgvDonacionesRecientes = new System.Windows.Forms.DataGridView();
-
             this.tabAlertas = new System.Windows.Forms.TabPage();
-            this.dgvAlertas = new System.Windows.Forms.DataGridView();
             this.lblSinAlertas = new System.Windows.Forms.Label();
-
+            this.dgvAlertas = new System.Windows.Forms.DataGridView();
             this.tabEstadisticas = new System.Windows.Forms.TabPage();
             this.dgvDonantesPorTipo = new System.Windows.Forms.DataGridView();
-
             this.panelTop.SuspendLayout();
             this.panelEstadisticas.SuspendLayout();
             this.tableLayoutEstadisticas.SuspendLayout();
@@ -100,7 +85,6 @@ namespace BancoDeSangreApp.Forms
             this.tabEstadisticas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDonantesPorTipo)).BeginInit();
             this.SuspendLayout();
-
             // 
             // panelTop
             // 
@@ -113,31 +97,6 @@ namespace BancoDeSangreApp.Forms
             this.panelTop.Name = "panelTop";
             this.panelTop.Size = new System.Drawing.Size(1020, 80);
             this.panelTop.TabIndex = 0;
-
-            // 
-            // lblTitulo
-            // 
-            this.lblTitulo.AutoSize = true;
-            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
-            this.lblTitulo.ForeColor = System.Drawing.Color.White;
-            this.lblTitulo.Location = new System.Drawing.Point(20, 15);
-            this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(350, 32);
-            this.lblTitulo.TabIndex = 0;
-            this.lblTitulo.Text = "📊 Dashboard - Banco de Sangre";
-
-            // 
-            // lblUltimaActualizacion
-            // 
-            this.lblUltimaActualizacion.AutoSize = true;
-            this.lblUltimaActualizacion.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblUltimaActualizacion.ForeColor = System.Drawing.Color.White;
-            this.lblUltimaActualizacion.Location = new System.Drawing.Point(25, 50);
-            this.lblUltimaActualizacion.Name = "lblUltimaActualizacion";
-            this.lblUltimaActualizacion.Size = new System.Drawing.Size(150, 15);
-            this.lblUltimaActualizacion.TabIndex = 1;
-            this.lblUltimaActualizacion.Text = "Última actualización: --:--:--";
-
             // 
             // btnRefrescar
             // 
@@ -153,7 +112,29 @@ namespace BancoDeSangreApp.Forms
             this.btnRefrescar.Text = "🔄 Refrescar";
             this.btnRefrescar.UseVisualStyleBackColor = false;
             this.btnRefrescar.Click += new System.EventHandler(this.btnRefrescar_Click);
-
+            // 
+            // lblUltimaActualizacion
+            // 
+            this.lblUltimaActualizacion.AutoSize = true;
+            this.lblUltimaActualizacion.Font = new System.Drawing.Font("Segoe UI", 9F);
+            this.lblUltimaActualizacion.ForeColor = System.Drawing.Color.White;
+            this.lblUltimaActualizacion.Location = new System.Drawing.Point(25, 50);
+            this.lblUltimaActualizacion.Name = "lblUltimaActualizacion";
+            this.lblUltimaActualizacion.Size = new System.Drawing.Size(156, 15);
+            this.lblUltimaActualizacion.TabIndex = 1;
+            this.lblUltimaActualizacion.Text = "Última actualización: --:--:--";
+            // 
+            // lblTitulo
+            // 
+            this.lblTitulo.AutoSize = true;
+            this.lblTitulo.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Bold);
+            this.lblTitulo.ForeColor = System.Drawing.Color.White;
+            this.lblTitulo.Location = new System.Drawing.Point(20, 15);
+            this.lblTitulo.Name = "lblTitulo";
+            this.lblTitulo.Size = new System.Drawing.Size(394, 32);
+            this.lblTitulo.TabIndex = 0;
+            this.lblTitulo.Text = "📊 Dashboard - Banco de Sangre";
+            this.lblTitulo.Click += new System.EventHandler(this.lblTitulo_Click);
             // 
             // panelEstadisticas
             // 
@@ -164,7 +145,6 @@ namespace BancoDeSangreApp.Forms
             this.panelEstadisticas.Padding = new System.Windows.Forms.Padding(20, 20, 20, 10);
             this.panelEstadisticas.Size = new System.Drawing.Size(1020, 140);
             this.panelEstadisticas.TabIndex = 1;
-
             // 
             // tableLayoutEstadisticas
             // 
@@ -184,7 +164,6 @@ namespace BancoDeSangreApp.Forms
             this.tableLayoutEstadisticas.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
             this.tableLayoutEstadisticas.Size = new System.Drawing.Size(980, 110);
             this.tableLayoutEstadisticas.TabIndex = 0;
-
             // 
             // panelDonantes
             // 
@@ -197,7 +176,6 @@ namespace BancoDeSangreApp.Forms
             this.panelDonantes.Name = "panelDonantes";
             this.panelDonantes.Size = new System.Drawing.Size(235, 100);
             this.panelDonantes.TabIndex = 0;
-
             // 
             // lblTotalDonantes
             // 
@@ -210,7 +188,6 @@ namespace BancoDeSangreApp.Forms
             this.lblTotalDonantes.TabIndex = 1;
             this.lblTotalDonantes.Text = "0";
             this.lblTotalDonantes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
             // 
             // lblTituloDonantes
             // 
@@ -224,7 +201,6 @@ namespace BancoDeSangreApp.Forms
             this.lblTituloDonantes.TabIndex = 0;
             this.lblTituloDonantes.Text = "👥 Total Donantes";
             this.lblTituloDonantes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-
             // 
             // panelDonaciones
             // 
@@ -237,7 +213,6 @@ namespace BancoDeSangreApp.Forms
             this.panelDonaciones.Name = "panelDonaciones";
             this.panelDonaciones.Size = new System.Drawing.Size(235, 100);
             this.panelDonaciones.TabIndex = 1;
-
             // 
             // lblTotalDonaciones
             // 
@@ -250,7 +225,6 @@ namespace BancoDeSangreApp.Forms
             this.lblTotalDonaciones.TabIndex = 1;
             this.lblTotalDonaciones.Text = "0";
             this.lblTotalDonaciones.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
             // 
             // lblTituloDonaciones
             // 
@@ -264,7 +238,6 @@ namespace BancoDeSangreApp.Forms
             this.lblTituloDonaciones.TabIndex = 0;
             this.lblTituloDonaciones.Text = "💉 Unidades Disponibles";
             this.lblTituloDonaciones.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-
             // 
             // panelSolicitudes
             // 
@@ -277,7 +250,6 @@ namespace BancoDeSangreApp.Forms
             this.panelSolicitudes.Name = "panelSolicitudes";
             this.panelSolicitudes.Size = new System.Drawing.Size(235, 100);
             this.panelSolicitudes.TabIndex = 2;
-
             // 
             // lblSolicitudesPendientes
             // 
@@ -290,7 +262,6 @@ namespace BancoDeSangreApp.Forms
             this.lblSolicitudesPendientes.TabIndex = 1;
             this.lblSolicitudesPendientes.Text = "0";
             this.lblSolicitudesPendientes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
             // 
             // lblTituloSolicitudes
             // 
@@ -304,7 +275,6 @@ namespace BancoDeSangreApp.Forms
             this.lblTituloSolicitudes.TabIndex = 0;
             this.lblTituloSolicitudes.Text = "📋 Solicitudes Pendientes";
             this.lblTituloSolicitudes.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-
             // 
             // panelPorVencer
             // 
@@ -317,7 +287,6 @@ namespace BancoDeSangreApp.Forms
             this.panelPorVencer.Name = "panelPorVencer";
             this.panelPorVencer.Size = new System.Drawing.Size(235, 100);
             this.panelPorVencer.TabIndex = 3;
-
             // 
             // lblUnidadesPorVencer
             // 
@@ -330,7 +299,6 @@ namespace BancoDeSangreApp.Forms
             this.lblUnidadesPorVencer.TabIndex = 1;
             this.lblUnidadesPorVencer.Text = "0";
             this.lblUnidadesPorVencer.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-
             // 
             // lblTituloPorVencer
             // 
@@ -344,7 +312,6 @@ namespace BancoDeSangreApp.Forms
             this.lblTituloPorVencer.TabIndex = 0;
             this.lblTituloPorVencer.Text = "⚠️ Por Vencer (7 días)";
             this.lblTituloPorVencer.TextAlign = System.Drawing.ContentAlignment.TopCenter;
-
             // 
             // tabControl
             // 
@@ -361,19 +328,17 @@ namespace BancoDeSangreApp.Forms
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1020, 480);
             this.tabControl.TabIndex = 2;
-
             // 
             // tabInventario
             // 
             this.tabInventario.Controls.Add(this.dgvInventario);
-            this.tabInventario.Location = new System.Drawing.Point(4, 28);
+            this.tabInventario.Location = new System.Drawing.Point(4, 30);
             this.tabInventario.Name = "tabInventario";
             this.tabInventario.Padding = new System.Windows.Forms.Padding(10);
-            this.tabInventario.Size = new System.Drawing.Size(1012, 448);
+            this.tabInventario.Size = new System.Drawing.Size(1012, 446);
             this.tabInventario.TabIndex = 0;
             this.tabInventario.Text = "📦 Inventario por Tipo";
             this.tabInventario.UseVisualStyleBackColor = true;
-
             // 
             // dgvInventario
             // 
@@ -383,7 +348,7 @@ namespace BancoDeSangreApp.Forms
             this.dgvInventario.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(41)))), ((int)(((byte)(128)))), ((int)(((byte)(185)))));
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI", 10F);
             dataGridViewCellStyle1.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -397,21 +362,19 @@ namespace BancoDeSangreApp.Forms
             this.dgvInventario.ReadOnly = true;
             this.dgvInventario.RowHeadersVisible = false;
             this.dgvInventario.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvInventario.Size = new System.Drawing.Size(992, 428);
+            this.dgvInventario.Size = new System.Drawing.Size(992, 426);
             this.dgvInventario.TabIndex = 0;
-
             // 
             // tabSolicitudes
             // 
             this.tabSolicitudes.Controls.Add(this.dgvSolicitudes);
-            this.tabSolicitudes.Location = new System.Drawing.Point(4, 28);
+            this.tabSolicitudes.Location = new System.Drawing.Point(4, 30);
             this.tabSolicitudes.Name = "tabSolicitudes";
             this.tabSolicitudes.Padding = new System.Windows.Forms.Padding(10);
-            this.tabSolicitudes.Size = new System.Drawing.Size(1012, 448);
+            this.tabSolicitudes.Size = new System.Drawing.Size(1012, 446);
             this.tabSolicitudes.TabIndex = 1;
             this.tabSolicitudes.Text = "📋 Solicitudes Pendientes";
             this.tabSolicitudes.UseVisualStyleBackColor = true;
-
             // 
             // dgvSolicitudes
             // 
@@ -421,7 +384,7 @@ namespace BancoDeSangreApp.Forms
             this.dgvSolicitudes.BackgroundColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
             dataGridViewCellStyle2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(231)))), ((int)(((byte)(76)))), ((int)(((byte)(60)))));
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 10F);
             dataGridViewCellStyle2.ForeColor = System.Drawing.Color.White;
             dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
             dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
@@ -435,21 +398,19 @@ namespace BancoDeSangreApp.Forms
             this.dgvSolicitudes.ReadOnly = true;
             this.dgvSolicitudes.RowHeadersVisible = false;
             this.dgvSolicitudes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvSolicitudes.Size = new System.Drawing.Size(992, 428);
+            this.dgvSolicitudes.Size = new System.Drawing.Size(992, 426);
             this.dgvSolicitudes.TabIndex = 0;
-
             // 
             // tabDonaciones
             // 
             this.tabDonaciones.Controls.Add(this.dgvDonacionesRecientes);
-            this.tabDonaciones.Location = new System.Drawing.Point(4, 28);
+            this.tabDonaciones.Location = new System.Drawing.Point(4, 30);
             this.tabDonaciones.Name = "tabDonaciones";
             this.tabDonaciones.Padding = new System.Windows.Forms.Padding(10);
-            this.tabDonaciones.Size = new System.Drawing.Size(1012, 448);
+            this.tabDonaciones.Size = new System.Drawing.Size(1012, 446);
             this.tabDonaciones.TabIndex = 2;
             this.tabDonaciones.Text = "💉 Donaciones Recientes";
             this.tabDonaciones.UseVisualStyleBackColor = true;
-
             // 
             // dgvDonacionesRecientes
             // 
@@ -464,22 +425,33 @@ namespace BancoDeSangreApp.Forms
             this.dgvDonacionesRecientes.ReadOnly = true;
             this.dgvDonacionesRecientes.RowHeadersVisible = false;
             this.dgvDonacionesRecientes.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDonacionesRecientes.Size = new System.Drawing.Size(992, 428);
+            this.dgvDonacionesRecientes.Size = new System.Drawing.Size(992, 426);
             this.dgvDonacionesRecientes.TabIndex = 0;
-
             // 
             // tabAlertas
             // 
             this.tabAlertas.Controls.Add(this.lblSinAlertas);
             this.tabAlertas.Controls.Add(this.dgvAlertas);
-            this.tabAlertas.Location = new System.Drawing.Point(4, 28);
+            this.tabAlertas.Location = new System.Drawing.Point(4, 30);
             this.tabAlertas.Name = "tabAlertas";
             this.tabAlertas.Padding = new System.Windows.Forms.Padding(10);
-            this.tabAlertas.Size = new System.Drawing.Size(1012, 448);
+            this.tabAlertas.Size = new System.Drawing.Size(1012, 446);
             this.tabAlertas.TabIndex = 3;
             this.tabAlertas.Text = "⚠️ Alertas";
             this.tabAlertas.UseVisualStyleBackColor = true;
-
+            // 
+            // lblSinAlertas
+            // 
+            this.lblSinAlertas.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.lblSinAlertas.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
+            this.lblSinAlertas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
+            this.lblSinAlertas.Location = new System.Drawing.Point(10, 10);
+            this.lblSinAlertas.Name = "lblSinAlertas";
+            this.lblSinAlertas.Size = new System.Drawing.Size(992, 426);
+            this.lblSinAlertas.TabIndex = 1;
+            this.lblSinAlertas.Text = "✓ No hay alertas de inventario";
+            this.lblSinAlertas.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblSinAlertas.Visible = false;
             // 
             // dgvAlertas
             // 
@@ -494,35 +466,19 @@ namespace BancoDeSangreApp.Forms
             this.dgvAlertas.ReadOnly = true;
             this.dgvAlertas.RowHeadersVisible = false;
             this.dgvAlertas.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvAlertas.Size = new System.Drawing.Size(992, 428);
+            this.dgvAlertas.Size = new System.Drawing.Size(992, 426);
             this.dgvAlertas.TabIndex = 0;
-
-            // 
-            // lblSinAlertas
-            // 
-            this.lblSinAlertas.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.lblSinAlertas.Font = new System.Drawing.Font("Segoe UI", 16F, System.Drawing.FontStyle.Bold);
-            this.lblSinAlertas.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(46)))), ((int)(((byte)(204)))), ((int)(((byte)(113)))));
-            this.lblSinAlertas.Location = new System.Drawing.Point(10, 10);
-            this.lblSinAlertas.Name = "lblSinAlertas";
-            this.lblSinAlertas.Size = new System.Drawing.Size(992, 428);
-            this.lblSinAlertas.TabIndex = 1;
-            this.lblSinAlertas.Text = "✓ No hay alertas de inventario";
-            this.lblSinAlertas.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lblSinAlertas.Visible = false;
-
             // 
             // tabEstadisticas
             // 
             this.tabEstadisticas.Controls.Add(this.dgvDonantesPorTipo);
-            this.tabEstadisticas.Location = new System.Drawing.Point(4, 28);
+            this.tabEstadisticas.Location = new System.Drawing.Point(4, 30);
             this.tabEstadisticas.Name = "tabEstadisticas";
             this.tabEstadisticas.Padding = new System.Windows.Forms.Padding(10);
-            this.tabEstadisticas.Size = new System.Drawing.Size(1012, 448);
+            this.tabEstadisticas.Size = new System.Drawing.Size(1012, 446);
             this.tabEstadisticas.TabIndex = 4;
             this.tabEstadisticas.Text = "📊 Estadísticas de Donantes";
             this.tabEstadisticas.UseVisualStyleBackColor = true;
-
             // 
             // dgvDonantesPorTipo
             // 
@@ -537,9 +493,8 @@ namespace BancoDeSangreApp.Forms
             this.dgvDonantesPorTipo.ReadOnly = true;
             this.dgvDonantesPorTipo.RowHeadersVisible = false;
             this.dgvDonantesPorTipo.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvDonantesPorTipo.Size = new System.Drawing.Size(992, 428);
+            this.dgvDonantesPorTipo.Size = new System.Drawing.Size(992, 426);
             this.dgvDonantesPorTipo.TabIndex = 0;
-
             // 
             // FrmDashboard
             // 
