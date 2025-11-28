@@ -288,7 +288,8 @@ namespace BancoDeSangreApp.Forms
             {
                 try
                 {
-                    var resultado = _solicitudBLL.AsignarDonacionesASolicitud(
+                    // CORRECCIÓN: Cambiar AsignarDonacionesASolicitud por AsignarDonaciones
+                    var resultado = _solicitudBLL.AsignarDonaciones(
                         _idSolicitud,
                         _donacionesSeleccionadas,
                         Program.UsuarioActual?.IdUsuario);

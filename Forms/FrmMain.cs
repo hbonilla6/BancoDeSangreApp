@@ -180,7 +180,10 @@ namespace BancoDeSangreApp.Forms
 
         private async void btnDonaciones_Click(object sender, EventArgs e)
         {
-
+            ActivarBoton(btnDonaciones);
+            //FrmDonaciones frmDonaciones = new FrmDonaciones();
+            //frmDonaciones.Show();
+            await AbrirFormularioAsync<FrmDonaciones>("Cargando Donaciones...");
 
         }
 
