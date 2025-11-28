@@ -181,8 +181,6 @@ namespace BancoDeSangreApp.Forms
         private async void btnDonaciones_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnDonaciones);
-            //FrmDonaciones frmDonaciones = new FrmDonaciones();
-            //frmDonaciones.Show();
             await AbrirFormularioAsync<FrmDonaciones>("Cargando Donaciones...");
 
         }
@@ -190,39 +188,13 @@ namespace BancoDeSangreApp.Forms
         private async void btnInventario_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnInventario);
-            // TODO: Cambiar por el formulario real cuando esté disponible
-            MessageBox.Show(
-                "Módulo de Inventario\n\n" +
-                "Este módulo permite gestionar:\n" +
-                "• Stock por tipo de sangre\n" +
-                "• Alertas de inventario bajo\n" +
-                "• Unidades próximas a vencer\n" +
-                "• Movimientos de entrada/salida",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-            // Descomentar cuando tengas el formulario:
-            // await AbrirFormularioAsync<FrmInventario>("Cargando Inventario...");
+            await AbrirFormularioAsync<FrmInventario>("Cargando Inventario...");
         }
 
         private async void btnSolicitudes_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnSolicitudes);
-            // TODO: Cambiar por el formulario real cuando esté disponible
-            MessageBox.Show(
-                "Módulo de Solicitudes Médicas\n\n" +
-                "Este módulo permite gestionar:\n" +
-                "• Crear nuevas solicitudes\n" +
-                "• Asignar prioridades\n" +
-                "• Aprobar o rechazar solicitudes\n" +
-                "• Historial de solicitudes",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-            // Descomentar cuando tengas el formulario:
-            // await AbrirFormularioAsync<FrmSolicitudes>("Cargando Solicitudes...");
+            await AbrirFormularioAsync<FrmSolicitudesMedicas>("Cargando Solicitudes...");
         }
 
         private async void btnReportes_Click(object sender, EventArgs e)
