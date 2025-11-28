@@ -162,26 +162,16 @@ namespace BancoDeSangreApp.Forms
         private async void btnDonantes_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnDonantes);
-            // TODO: Cambiar por el formulario real cuando esté disponible
-            MessageBox.Show(
-                "Módulo de Donantes\n\n" +
-                "Este módulo permite gestionar:\n" +
-                "• Registro de nuevos donantes\n" +
-                "• Búsqueda y edición de donantes\n" +
-                "• Historial de donaciones\n" +
-                "• Estado de elegibilidad",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-            // Descomentar cuando tengas el formulario:
-            // await AbrirFormularioAsync<FrmDonantes>("Cargando Donantes...");
+            FrmDonantes frmDonantes = new FrmDonantes();
+            frmDonantes.Show();
+
         }
 
         private async void btnDonaciones_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnDonaciones);
-            await AbrirFormularioAsync<FrmDonaciones>("Cargando Donaciones...");
+            FrmDonaciones frmDonaciones = new FrmDonaciones();
+            frmDonaciones.Show();
 
         }
 
