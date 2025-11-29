@@ -170,8 +170,10 @@ namespace BancoDeSangreApp.Forms
         private async void btnDonaciones_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnDonaciones);
-            FrmDonaciones frmDonaciones = new FrmDonaciones();
-            frmDonaciones.Show();
+            //FrmDonaciones frmDonaciones = new FrmDonaciones();
+            //frmDonaciones.Show();
+            FrmCentrosRecoleccion frmCentros = new FrmCentrosRecoleccion();
+            frmCentros.Show();
 
         }
 
@@ -252,6 +254,11 @@ namespace BancoDeSangreApp.Forms
                 }
             }
             base.OnFormClosing(e);
+        }
+
+        private void panelContenedor_Paint(object sender, PaintEventArgs e)
+        {
+             
         }
     }
 }

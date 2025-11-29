@@ -92,6 +92,13 @@ namespace BancoDeSangreApp.Forms
                 HeaderText = "Correo",
                 Width = 150
             });
+            dgvDonantes.Columns.Add(new DataGridViewTextBoxColumn
+            {
+                Name = "Direccion",
+                DataPropertyName = "Direccion",
+                HeaderText = "Dirección",
+                Width = 200
+            });
 
             dgvDonantes.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgvDonantes.MultiSelect = false;
@@ -413,6 +420,11 @@ namespace BancoDeSangreApp.Forms
             btnEditar.Enabled = !habilitar && _idDonanteSeleccionado != null;
             btnEliminar.Enabled = !habilitar && _idDonanteSeleccionado != null;
             dgvDonantes.Enabled = !habilitar;
+        }
+
+        private void pnlTop_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

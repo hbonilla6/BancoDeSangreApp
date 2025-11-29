@@ -207,7 +207,6 @@
             this.lblUsuario.Size = new System.Drawing.Size(190, 40);
             this.lblUsuario.TabIndex = 0;
             this.lblUsuario.Text = "👤 Usuario:\r\nNombre";
-            this.lblUsuario.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             // 
             // lblEntidad
             // 
@@ -219,7 +218,6 @@
             this.lblEntidad.Size = new System.Drawing.Size(190, 45);
             this.lblEntidad.TabIndex = 1;
             this.lblEntidad.Text = "🏥 Entidad:\r\nHospital General";
-            this.lblEntidad.TextAlign = System.Drawing.ContentAlignment.TopLeft;
             // 
             // panelLogo
             // 
@@ -252,6 +250,7 @@
             this.panelContenedor.Name = "panelContenedor";
             this.panelContenedor.Size = new System.Drawing.Size(980, 700);
             this.panelContenedor.TabIndex = 2;
+            this.panelContenedor.Paint += new System.Windows.Forms.PaintEventHandler(this.panelContenedor_Paint);
             // 
             // FrmMain
             // 

@@ -72,6 +72,7 @@
             this.pnlTop.Name = "pnlTop";
             this.pnlTop.Size = new System.Drawing.Size(1370, 80);
             this.pnlTop.TabIndex = 0;
+            this.pnlTop.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlTop_Paint);
             // 
             // lblTitulo
             // 
@@ -80,7 +81,7 @@
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(12, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(268, 37);
+            this.lblTitulo.Size = new System.Drawing.Size(289, 37);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "🩸 Gestión Donantes";
             // 
@@ -198,7 +199,7 @@
             this.lblCorreo.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblCorreo.Location = new System.Drawing.Point(20, 340);
             this.lblCorreo.Name = "lblCorreo";
-            this.lblCorreo.Size = new System.Drawing.Size(136, 19);
+            this.lblCorreo.Size = new System.Drawing.Size(138, 19);
             this.lblCorreo.TabIndex = 12;
             this.lblCorreo.Text = "Correo Electrónico:";
             // 
@@ -237,7 +238,7 @@
             this.lblFechaNacimiento.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblFechaNacimiento.Location = new System.Drawing.Point(20, 230);
             this.lblFechaNacimiento.Name = "lblFechaNacimiento";
-            this.lblFechaNacimiento.Size = new System.Drawing.Size(131, 19);
+            this.lblFechaNacimiento.Size = new System.Drawing.Size(132, 19);
             this.lblFechaNacimiento.TabIndex = 8;
             this.lblFechaNacimiento.Text = "Fecha Nacimiento:";
             // 
@@ -301,7 +302,7 @@
             this.lblDocumento.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblDocumento.Location = new System.Drawing.Point(20, 120);
             this.lblDocumento.Name = "lblDocumento";
-            this.lblDocumento.Size = new System.Drawing.Size(121, 19);
+            this.lblDocumento.Size = new System.Drawing.Size(120, 19);
             this.lblDocumento.TabIndex = 2;
             this.lblDocumento.Text = "Documento/DUI:";
             // 
@@ -320,7 +321,7 @@
             this.lblNombre.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblNombre.Location = new System.Drawing.Point(20, 60);
             this.lblNombre.Name = "lblNombre";
-            this.lblNombre.Size = new System.Drawing.Size(136, 19);
+            this.lblNombre.Size = new System.Drawing.Size(139, 19);
             this.lblNombre.TabIndex = 0;
             this.lblNombre.Text = "Nombre Completo:";
             // 
@@ -391,7 +392,7 @@
             this.lblBuscar.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblBuscar.Location = new System.Drawing.Point(10, 20);
             this.lblBuscar.Name = "lblBuscar";
-            this.lblBuscar.Size = new System.Drawing.Size(56, 19);
+            this.lblBuscar.Size = new System.Drawing.Size(58, 19);
             this.lblBuscar.TabIndex = 5;
             this.lblBuscar.Text = "Buscar:";
             // 
@@ -486,7 +487,7 @@
             this.lblTotalDonantes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotalDonantes.Location = new System.Drawing.Point(20, 15);
             this.lblTotalDonantes.Name = "lblTotalDonantes";
-            this.lblTotalDonantes.Size = new System.Drawing.Size(127, 19);
+            this.lblTotalDonantes.Size = new System.Drawing.Size(123, 19);
             this.lblTotalDonantes.TabIndex = 0;
             this.lblTotalDonantes.Text = "Total: 0 donantes";
             // 
