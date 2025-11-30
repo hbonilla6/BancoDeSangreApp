@@ -426,5 +426,10 @@ namespace BancoDeSangreApp.Forms
         {
 
         }
+
+        private void grpDatosDonante_Enter(object sender, EventArgs e)
+        {
+
+        }
     }
 }

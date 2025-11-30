@@ -133,6 +133,7 @@
             this.grpDatosDonante.TabIndex = 0;
             this.grpDatosDonante.TabStop = false;
             this.grpDatosDonante.Text = "Datos del Donante";
+            this.grpDatosDonante.Enter += new System.EventHandler(this.grpDatosDonante_Enter);
             // 
             // btnCancelar
             // 
