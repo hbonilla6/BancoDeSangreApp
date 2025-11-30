@@ -192,20 +192,7 @@ namespace BancoDeSangreApp.Forms
         private async void btnReportes_Click(object sender, EventArgs e)
         {
             ActivarBoton(btnReportes);
-            // TODO: Cambiar por el formulario real cuando esté disponible
-            MessageBox.Show(
-                "Módulo de Reportes\n\n" +
-                "Este módulo permite generar:\n" +
-                "• Reportes de donaciones\n" +
-                "• Estadísticas de inventario\n" +
-                "• Gráficos de tendencias\n" +
-                "• Exportación a PDF/Excel",
-                "Información",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information
-            );
-            // Descomentar cuando tengas el formulario:
-            // await AbrirFormularioAsync<FrmReportes>("Generando Reportes...");
+            await AbrirFormularioAsync<FrmReportes>("Generando Reportes...");
         }
 
         private void btnCerrarSesion_Click(object sender, EventArgs e)
