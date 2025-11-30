@@ -49,6 +49,8 @@
   <ItemGroup>
     <Compile Include="Business\AuditoriaBLL.cs" />
     <Compile Include="Business\InventarioBLL.cs" />
+    <Compile Include="Business\NotificacionesBLL.cs" />
+    <Compile Include="Business\PermisosBLL.cs" />
     <Compile Include="Business\SeguridadBLL.cs" />
     <Compile Include="Business\SolicitudMedicaBLL.cs" />
     <Compile Include="Business\UsuarioBLL.cs" />
@@ -61,6 +63,12 @@
     </Compile>
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Equipo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Equipo.Designer.cs">
+      <DependentUpon>Equipo.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FormDonaciones.cs">
       <SubType>Form</SubType>
@@ -141,6 +149,9 @@
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Equipo.resx">
+      <DependentUpon>Equipo.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormDonaciones.resx">
       <DependentUpon>FormDonaciones.cs</DependentUpon>
     </EmbeddedResource>
@@ -202,8 +213,6 @@
   <ItemGroup>
     <Content Include="Data\Documents\ScriptDB.sql" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Forms\Main\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
