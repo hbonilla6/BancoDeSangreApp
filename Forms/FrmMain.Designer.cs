@@ -33,6 +33,7 @@
             this.btnReportes = new System.Windows.Forms.Button();
             this.btnSolicitudes = new System.Windows.Forms.Button();
             this.btnInventario = new System.Windows.Forms.Button();
+            this.btnCentros = new System.Windows.Forms.Button(); // <--- Declaración Nuevo Botón
             this.btnDonaciones = new System.Windows.Forms.Button();
             this.btnDonantes = new System.Windows.Forms.Button();
             this.btnDashboard = new System.Windows.Forms.Button();
@@ -51,6 +52,7 @@
             this.panelMenu.Controls.Add(this.btnReportes);
             this.panelMenu.Controls.Add(this.btnSolicitudes);
             this.panelMenu.Controls.Add(this.btnInventario);
+            this.panelMenu.Controls.Add(this.btnCentros); // <--- Agregado al panel
             this.panelMenu.Controls.Add(this.btnDonaciones);
             this.panelMenu.Controls.Add(this.btnDonantes);
             this.panelMenu.Controls.Add(this.btnDashboard);
@@ -72,7 +74,7 @@
             this.btnCerrarSesion.Name = "btnCerrarSesion";
             this.btnCerrarSesion.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.btnCerrarSesion.Size = new System.Drawing.Size(250, 50);
-            this.btnCerrarSesion.TabIndex = 7;
+            this.btnCerrarSesion.TabIndex = 8;
             this.btnCerrarSesion.Text = "🚪  Cerrar Sesión";
             this.btnCerrarSesion.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnCerrarSesion.UseVisualStyleBackColor = true;
@@ -85,11 +87,11 @@
             this.btnReportes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnReportes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReportes.ForeColor = System.Drawing.Color.White;
-            this.btnReportes.Location = new System.Drawing.Point(0, 370);
+            this.btnReportes.Location = new System.Drawing.Point(0, 415); // <--- Posición ajustada
             this.btnReportes.Name = "btnReportes";
             this.btnReportes.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.btnReportes.Size = new System.Drawing.Size(250, 45);
-            this.btnReportes.TabIndex = 6;
+            this.btnReportes.TabIndex = 7;
             this.btnReportes.Text = "📊  Reportes";
             this.btnReportes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnReportes.UseVisualStyleBackColor = true;
@@ -102,11 +104,11 @@
             this.btnSolicitudes.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSolicitudes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSolicitudes.ForeColor = System.Drawing.Color.White;
-            this.btnSolicitudes.Location = new System.Drawing.Point(0, 325);
+            this.btnSolicitudes.Location = new System.Drawing.Point(0, 370); // <--- Posición ajustada
             this.btnSolicitudes.Name = "btnSolicitudes";
             this.btnSolicitudes.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.btnSolicitudes.Size = new System.Drawing.Size(250, 45);
-            this.btnSolicitudes.TabIndex = 5;
+            this.btnSolicitudes.TabIndex = 6;
             this.btnSolicitudes.Text = "📋  Solicitudes";
             this.btnSolicitudes.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSolicitudes.UseVisualStyleBackColor = true;
@@ -119,15 +121,32 @@
             this.btnInventario.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnInventario.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnInventario.ForeColor = System.Drawing.Color.White;
-            this.btnInventario.Location = new System.Drawing.Point(0, 280);
+            this.btnInventario.Location = new System.Drawing.Point(0, 325); // <--- Posición ajustada
             this.btnInventario.Name = "btnInventario";
             this.btnInventario.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
             this.btnInventario.Size = new System.Drawing.Size(250, 45);
-            this.btnInventario.TabIndex = 4;
+            this.btnInventario.TabIndex = 5;
             this.btnInventario.Text = "📦  Inventario";
             this.btnInventario.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnInventario.UseVisualStyleBackColor = true;
             this.btnInventario.Click += new System.EventHandler(this.btnInventario_Click);
+            // 
+            // btnCentros
+            // 
+            this.btnCentros.Dock = System.Windows.Forms.DockStyle.Top;
+            this.btnCentros.FlatAppearance.BorderSize = 0;
+            this.btnCentros.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnCentros.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCentros.ForeColor = System.Drawing.Color.White;
+            this.btnCentros.Location = new System.Drawing.Point(0, 280); // <--- Nueva Posición
+            this.btnCentros.Name = "btnCentros";
+            this.btnCentros.Padding = new System.Windows.Forms.Padding(15, 0, 0, 0);
+            this.btnCentros.Size = new System.Drawing.Size(250, 45);
+            this.btnCentros.TabIndex = 4;
+            this.btnCentros.Text = "🏥  Centros"; // Icono y Texto
+            this.btnCentros.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnCentros.UseVisualStyleBackColor = true;
+            this.btnCentros.Click += new System.EventHandler(this.btnCentros_Click); // Evento Click
             // 
             // btnDonaciones
             // 
@@ -254,6 +273,7 @@
         private System.Windows.Forms.Button btnDashboard;
         private System.Windows.Forms.Button btnDonantes;
         private System.Windows.Forms.Button btnDonaciones;
+        private System.Windows.Forms.Button btnCentros; // <--- Nuevo botón
         private System.Windows.Forms.Button btnInventario;
         private System.Windows.Forms.Button btnSolicitudes;
         private System.Windows.Forms.Button btnReportes;

@@ -284,6 +284,11 @@ namespace BancoDeSangreApp.Forms
             ActivarBoton(btnDonantes);
             await AbrirFormularioAsync<FrmDonantes>("Cargando Donantes...");
         }
+        private async void btnCentros_Click(object sender, EventArgs e)
+        {
+            ActivarBoton(btnCentros);
+            await AbrirFormularioAsync<FrmCentrosRecoleccion>("Cargando Centros...");
+        }
 
         private async void btnDonaciones_Click(object sender, EventArgs e)
         {
@@ -294,7 +299,7 @@ namespace BancoDeSangreApp.Forms
             }
 
             ActivarBoton(btnDonaciones);
-            await AbrirFormularioAsync<FrmCentrosRecoleccion>("Cargando Centros...");
+            await AbrirFormularioAsync<FrmDonaciones>("Cargando Centros...");
         }
 
         private async void btnInventario_Click(object sender, EventArgs e)
