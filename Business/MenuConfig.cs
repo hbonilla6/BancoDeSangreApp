@@ -60,7 +60,7 @@ namespace BancoDeSangreApp.Business
                     Formularios = new List<FormularioMenu>
                     {
                         new FormularioMenu { Nombre = "FrmAuditoria", Icono = "🔒", Texto = "Auditoría", Orden = 1 },
-                        new FormularioMenu { Nombre = "FrmUsuarios", Icono = "👨", Texto = "Usuarios", Orden = 2 }
+                        //new FormularioMenu { Nombre = "FrmUsuarios", Icono = "👨", Texto = "Usuarios", Orden = 2 }
                     }
                 }
             }

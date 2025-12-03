@@ -16,44 +16,48 @@ namespace BancoDeSangreApp.Forms
         {
             InitializeComponent();
             _usuariosBLL = new UsuarioBLL();
-
-            // Importante: Deshabilitar CheckForIllegalCrossThreadCalls para evitar el error
-            CheckForIllegalCrossThreadCalls = false;
         }
 
         private void FrmUsuarios_Load(object sender, EventArgs e)
         {
-            ConfigurarDataGridView();
+            try
+            {
+                ConfigurarDataGridView();
 
-            // Agregar evento para formatear celdas
-            dgvUsuarios.CellFormatting += dgvUsuarios_CellFormatting;
+                // Suscribir el evento ANTES de cargar los datos
+                dgvUsuarios.CellFormatting += dgvUsuarios_CellFormatting;
 
-            CargarUsuarios();
+                CargarUsuarios();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar el formulario:\n{ex.Message}\n\nStack: {ex.StackTrace}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void dgvUsuarios_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
             try
             {
-                // Formatear la columna "Activo"
+                if (dgvUsuarios.Columns.Count <= e.ColumnIndex || e.ColumnIndex < 0)
+                    return;
+
                 if (dgvUsuarios.Columns[e.ColumnIndex].Name == "Activo" && e.Value != null)
                 {
-                    if (e.Value is bool)
-                    {
-                        bool activo = (bool)e.Value;
-                        e.Value = activo ? "✅ Activo" : "❌ Inactivo";
-                        e.FormattingApplied = true;
+                    bool activo = Convert.ToBoolean(e.Value);
+                    e.Value = activo ? "✅ Activo" : "❌ Inactivo";
+                    e.FormattingApplied = true;
 
-                        if (!activo)
-                        {
-                            e.CellStyle.ForeColor = Color.Gray;
-                        }
+                    if (!activo)
+                    {
+                        e.CellStyle.ForeColor = Color.Gray;
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                // Ignorar errores de formato
+                System.Diagnostics.Debug.WriteLine($"Error en CellFormatting: {ex.Message}");
             }
         }
 
@@ -79,60 +83,87 @@ namespace BancoDeSangreApp.Forms
         {
             try
             {
+                // Ejecutar en el hilo de UI
+                if (this.InvokeRequired)
+                {
+                    this.Invoke(new Action(CargarUsuarios));
+                    return;
+                }
+
                 _dtUsuarios = _usuariosBLL.ObtenerUsuarios(Program.UsuarioActual.IdEntidad);
 
-                // Limpiar el DataGridView primero
                 dgvUsuarios.DataSource = null;
-                dgvUsuarios.Rows.Clear();
                 dgvUsuarios.Columns.Clear();
 
-                // Asignar el DataSource
+                if (_dtUsuarios == null || _dtUsuarios.Rows.Count == 0)
+                {
+                    MessageBox.Show("No hay usuarios registrados.", "Información",
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    lblTitulo.Text = "👥 Gestión de Usuarios (0)";
+                    return;
+                }
+
                 dgvUsuarios.DataSource = _dtUsuarios;
 
-                if (dgvUsuarios.Columns.Count > 0)
-                {
+                // Configurar columnas solo si existen
+                if (dgvUsuarios.Columns.Contains("IdUsuario"))
                     dgvUsuarios.Columns["IdUsuario"].Visible = false;
 
+                if (dgvUsuarios.Columns.Contains("Usuario"))
+                {
                     dgvUsuarios.Columns["Usuario"].HeaderText = "Usuario";
                     dgvUsuarios.Columns["Usuario"].Width = 120;
+                }
 
+                if (dgvUsuarios.Columns.Contains("NombreCompleto"))
+                {
                     dgvUsuarios.Columns["NombreCompleto"].HeaderText = "Nombre Completo";
                     dgvUsuarios.Columns["NombreCompleto"].Width = 200;
+                }
 
+                if (dgvUsuarios.Columns.Contains("Correo"))
+                {
                     dgvUsuarios.Columns["Correo"].HeaderText = "Correo";
                     dgvUsuarios.Columns["Correo"].Width = 180;
+                }
 
+                if (dgvUsuarios.Columns.Contains("Telefono"))
+                {
                     dgvUsuarios.Columns["Telefono"].HeaderText = "Teléfono";
                     dgvUsuarios.Columns["Telefono"].Width = 100;
+                }
 
+                if (dgvUsuarios.Columns.Contains("Roles"))
+                {
                     dgvUsuarios.Columns["Roles"].HeaderText = "Roles";
                     dgvUsuarios.Columns["Roles"].Width = 150;
+                }
 
+                if (dgvUsuarios.Columns.Contains("Activo"))
+                {
                     dgvUsuarios.Columns["Activo"].HeaderText = "Estado";
-                    dgvUsuarios.Columns["Activo"].Width = 80;
+                    dgvUsuarios.Columns["Activo"].Width = 100;
+                }
 
+                if (dgvUsuarios.Columns.Contains("UltimoAcceso"))
+                {
                     dgvUsuarios.Columns["UltimoAcceso"].HeaderText = "Último Acceso";
                     dgvUsuarios.Columns["UltimoAcceso"].Width = 140;
-                    if (dgvUsuarios.Columns["UltimoAcceso"].ValueType != null)
-                    {
-                        dgvUsuarios.Columns["UltimoAcceso"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
-                    }
+                    dgvUsuarios.Columns["UltimoAcceso"].DefaultCellStyle.Format = "dd/MM/yyyy HH:mm";
+                }
 
+                if (dgvUsuarios.Columns.Contains("FechaCreacion"))
+                {
                     dgvUsuarios.Columns["FechaCreacion"].HeaderText = "Fecha Creación";
                     dgvUsuarios.Columns["FechaCreacion"].Width = 140;
-                    if (dgvUsuarios.Columns["FechaCreacion"].ValueType != null)
-                    {
-                        dgvUsuarios.Columns["FechaCreacion"].DefaultCellStyle.Format = "dd/MM/yyyy";
-                    }
-
-                    // NO formatear la columna Activo aquí - dejarla como viene de la BD
+                    dgvUsuarios.Columns["FechaCreacion"].DefaultCellStyle.Format = "dd/MM/yyyy";
                 }
 
                 lblTitulo.Text = $"👥 Gestión de Usuarios ({dgvUsuarios.Rows.Count})";
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar usuarios:\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
+                MessageBox.Show($"Error al cargar usuarios:\n{ex.Message}\n\n{ex.StackTrace}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
@@ -291,13 +322,11 @@ namespace BancoDeSangreApp.Forms
 
                 if (string.IsNullOrEmpty(filtro) || filtro == PLACEHOLDER_TEXT)
                 {
-                    // Restaurar todos los datos
                     dgvUsuarios.DataSource = null;
                     dgvUsuarios.DataSource = _dtUsuarios;
                 }
                 else
                 {
-                    // Filtrar datos
                     DataView dv = _dtUsuarios.DefaultView;
                     dv.RowFilter = $"NombreCompleto LIKE '%{filtro}%' OR Usuario LIKE '%{filtro}%' OR Correo LIKE '%{filtro}%'";
 
