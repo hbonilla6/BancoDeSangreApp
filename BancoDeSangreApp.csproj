@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Business\AuditoriaBLL.cs" />
     <Compile Include="Business\InventarioBLL.cs" />
+    <Compile Include="Business\MenuConfig.cs" />
     <Compile Include="Business\NotificacionesBLL.cs" />
     <Compile Include="Business\PermisosBLL.cs" />
     <Compile Include="Business\SeguridadBLL.cs" />
@@ -106,6 +107,12 @@
     </Compile>
     <Compile Include="Forms\FrmAuditoria.Designer.cs">
       <DependentUpon>FrmAuditoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmCambiarContrasena.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmCambiarContrasena.Designer.cs">
+      <DependentUpon>FrmCambiarContrasena.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmCentrosRecoleccion.cs">
       <SubType>Form</SubType>
@@ -155,7 +162,12 @@
     <Compile Include="Forms\FrmSolicitudesMedicas.Designer.cs">
       <DependentUpon>FrmSolicitudesMedicas.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmUsuarios.cs" />
+    <Compile Include="Forms\FrmUsuarios.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmUsuarios.Designer.cs">
+      <DependentUpon>FrmUsuarios.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Reportes.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -204,6 +216,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmSolicitudesMedicas.resx">
       <DependentUpon>FrmSolicitudesMedicas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmUsuarios.resx">
+      <DependentUpon>FrmUsuarios.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Reportes.resx">
       <DependentUpon>Reportes.cs</DependentUpon>

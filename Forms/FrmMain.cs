@@ -4,13 +4,14 @@ using System;
 using System.Drawing;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace BancoDeSangreApp.Forms
 {
     public partial class FrmMain : Form
     {
         private Button btnActivo;
-        private Button btnAcercaDe; // Nuevo botón para equipo
+        private Button btnAcercaDe;
 
         public FrmMain()
         {
@@ -38,15 +39,254 @@ namespace BancoDeSangreApp.Forms
             panelUsuario.Controls.Add(lblRol);
 
             ConfigurarEventosMenu();
+        }
+
+        private void ConfigurarPermisos()
+        {
+            var usuario = Program.UsuarioActual;
+
+            // Limpiar botones y controles existentes del panelMenuScroll
+            var controlesAEliminar = panelMenuScroll.Controls
+                .Cast<Control>()
+                .ToList();
+
+            foreach (var control in controlesAEliminar)
+            {
+                panelMenuScroll.Controls.Remove(control);
+                control.Dispose();
+            }
+
+            // Obtener categorías disponibles
+            var categorias = MenuConfig.ObtenerCategoriasDisponibles(usuario);
+
+            int posicionY = 10; // Empieza desde arriba del panel scroll
+
+            foreach (var categoria in categorias)
+            {
+                // Crear panel contenedor para la categoría
+                var panelCategoria = new Panel
+                {
+                    Name = $"panelCategoria_{categoria.Nombre}",
+                    Location = new Point(0, posicionY),
+                    Width = panelMenuScroll.Width - 20, // Restar espacio del scroll
+                    Height = 40,
+                    Tag = false
+                };
+
+                // Botón de categoría (header colapsable)
+                var btnCategoria = new Button
+                {
+                    Text = $"▶  {categoria.Nombre.ToUpper()}",
+                    Location = new Point(0, 0),
+                    Width = panelMenuScroll.Width - 20,
+                    Height = 40,
+                    FlatStyle = FlatStyle.Flat,
+                    Font = new Font("Segoe UI", 9F, FontStyle.Bold),
+                    ForeColor = Color.FromArgb(189, 195, 199),
+                    BackColor = Color.FromArgb(44, 62, 80),
+                    TextAlign = ContentAlignment.MiddleLeft,
+                    Padding = new Padding(15, 0, 0, 0),
+                    Tag = categoria
+                };
+                btnCategoria.FlatAppearance.BorderSize = 0;
+
+                // Efecto hover para categoría
+                btnCategoria.MouseEnter += (s, e) =>
+                {
+                    btnCategoria.BackColor = Color.FromArgb(52, 73, 94);
+                };
+                btnCategoria.MouseLeave += (s, e) =>
+                {
+                    btnCategoria.BackColor = Color.FromArgb(44, 62, 80);
+                };
+
+                // Panel de contenido de formularios
+                var panelFormularios = new Panel
+                {
+                    Name = $"panelFormularios_{categoria.Nombre}",
+                    Location = new Point(0, 40),
+                    Width = panelMenuScroll.Width - 20,
+                    Height = 0,
+                    Visible = false
+                };
+
+                // Agregar formularios al panel
+                int alturaFormularios = 0;
+                int posY = 0;
+                foreach (var formulario in categoria.Formularios.OrderBy(f => f.Orden))
+                {
+                    var btnFormulario = new Button
+                    {
+                        Name = $"btn{formulario.Nombre}",
+                        Text = $"{formulario.Icono}  {formulario.Texto}",
+                        Location = new Point(0, posY),
+                        Width = panelMenuScroll.Width - 20,
+                        Height = 45,
+                        FlatStyle = FlatStyle.Flat,
+                        Font = new Font("Segoe UI", 10F),
+                        ForeColor = Color.White,
+                        BackColor = Color.FromArgb(37, 46, 59),
+                        Padding = new Padding(35, 0, 0, 0),
+                        TextAlign = ContentAlignment.MiddleLeft,
+                        Tag = formulario.Nombre
+                    };
+
+                    btnFormulario.FlatAppearance.BorderSize = 0;
+                    btnFormulario.Click += BtnFormulario_Click;
+                    ConfigurarHoverBoton(btnFormulario);
+
+                    panelFormularios.Controls.Add(btnFormulario);
+                    posY += btnFormulario.Height;
+                    alturaFormularios += btnFormulario.Height;
+                }
+
+                // Evento click para expandir/colapsar
+                btnCategoria.Click += (s, e) =>
+                {
+                    bool estaExpandido = (bool)panelCategoria.Tag;
+
+                    if (estaExpandido)
+                    {
+                        ColapsarCategoria(btnCategoria, panelFormularios, panelCategoria);
+                    }
+                    else
+                    {
+                        ExpandirCategoria(btnCategoria, panelFormularios, panelCategoria, alturaFormularios);
+                    }
+                };
+
+                // Agregar controles al panel de categoría
+                panelCategoria.Controls.Add(btnCategoria);
+                panelCategoria.Controls.Add(panelFormularios);
+
+                panelMenuScroll.Controls.Add(panelCategoria);
+                panelCategoria.BringToFront();
+
+                posicionY += panelCategoria.Height + 2;
+            }
+
             AgregarBotonAcercaDe();
+        }
+
+        private void ExpandirCategoria(Button btnCategoria, Panel panelFormularios, Panel panelCategoria, int alturaTotal)
+        {
+            // Cambiar icono
+            btnCategoria.Text = btnCategoria.Text.Replace("▶", "▼");
+
+            // Marcar como expandido ANTES de la animación
+            panelCategoria.Tag = true;
+
+            // Mostrar panel de formularios
+            panelFormularios.Visible = true;
+            panelFormularios.Height = 0;
+
+            // Animación suave de expansión
+            Timer timer = new Timer { Interval = 10 };
+            int alturaObjetivo = alturaTotal;
+            int paso = Math.Max(alturaObjetivo / 15, 3); // Mínimo 3px por paso
+
+            timer.Tick += (s, e) =>
+            {
+                if (panelFormularios.Height < alturaObjetivo)
+                {
+                    panelFormularios.Height += paso;
+                    if (panelFormularios.Height > alturaObjetivo)
+                        panelFormularios.Height = alturaObjetivo;
+
+                    // Actualizar altura del panel contenedor
+                    panelCategoria.Height = btnCategoria.Height + panelFormularios.Height;
+                    AjustarPosicionCategorias();
+                }
+                else
+                {
+                    panelFormularios.Height = alturaObjetivo;
+                    panelCategoria.Height = btnCategoria.Height + alturaObjetivo;
+                    timer.Stop();
+                    timer.Dispose();
+                    AjustarPosicionCategorias();
+                }
+            };
+
+            timer.Start();
+        }
+
+        private void ColapsarCategoria(Button btnCategoria, Panel panelFormularios, Panel panelCategoria)
+        {
+            // Cambiar icono
+            btnCategoria.Text = btnCategoria.Text.Replace("▼", "▶");
+
+            // Marcar como colapsado ANTES de la animación
+            panelCategoria.Tag = false;
+
+            // Animación suave de colapso
+            int alturaInicial = panelFormularios.Height;
+            Timer timer = new Timer { Interval = 10 };
+            int paso = Math.Max(alturaInicial / 15, 3); // Mínimo 3px por paso
+
+            timer.Tick += (s, e) =>
+            {
+                if (panelFormularios.Height > paso)
+                {
+                    panelFormularios.Height -= paso;
+
+                    // Actualizar altura del panel contenedor
+                    panelCategoria.Height = btnCategoria.Height + panelFormularios.Height;
+                    AjustarPosicionCategorias();
+                }
+                else
+                {
+                    panelFormularios.Height = 0;
+                    panelFormularios.Visible = false;
+                    panelCategoria.Height = btnCategoria.Height;
+                    timer.Stop();
+                    timer.Dispose();
+                    AjustarPosicionCategorias();
+                }
+            };
+
+            timer.Start();
+        }
+
+        private void AjustarPosicionCategorias()
+        {
+            // Reposicionar todas las categorías después de expansión/colapso
+            int posicionY = 10; // CAMBIO: Empieza desde el inicio del panelMenuScroll
+
+            var panelesCategorias = panelMenuScroll.Controls // CAMBIO: panelMenuScroll
+                .OfType<Panel>()
+                .Where(p => p.Name != null && p.Name.StartsWith("panelCategoria_"))
+                .ToList();
+
+            // Ordenar por el orden original
+            panelesCategorias.Sort((a, b) =>
+            {
+                int indexA = panelMenuScroll.Controls.IndexOf(a); // CAMBIO: panelMenuScroll
+                int indexB = panelMenuScroll.Controls.IndexOf(b); // CAMBIO: panelMenuScroll
+                return indexB.CompareTo(indexA);
+            });
+
+            foreach (var panel in panelesCategorias)
+            {
+                panel.Location = new Point(0, posicionY);
+                posicionY += panel.Height + 2;
+            }
         }
 
         private void AgregarBotonAcercaDe()
         {
+            // Buscar si ya existe
+            var btnExistente = panelMenu.Controls // CAMBIO: Ahora en panelMenu, no panelMenuScroll
+                .OfType<Button>()
+                .FirstOrDefault(b => b.Name == "btnAcercaDe");
+
+            if (btnExistente != null)
+                return;
+
             btnAcercaDe = new Button
             {
+                Name = "btnAcercaDe",
                 Text = "ℹ️  Acerca de",
-                Dock = DockStyle.Bottom,
+                Dock = DockStyle.Bottom, // FIJO en la parte inferior
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 10F),
                 ForeColor = Color.White,
@@ -57,97 +297,78 @@ namespace BancoDeSangreApp.Forms
 
             btnAcercaDe.FlatAppearance.BorderSize = 0;
             btnAcercaDe.Click += btnAcercaDe_Click;
-
             ConfigurarHoverBoton(btnAcercaDe);
 
-            // Insertar antes del botón cerrar sesión
-            panelMenu.Controls.Add(btnAcercaDe);
-            btnAcercaDe.BringToFront();
+            panelMenu.Controls.Add(btnAcercaDe); // CAMBIO: En panelMenu
+            btnAcercaDe.BringToFront(); // Lo coloca antes de btnCerrarSesion
         }
 
-        private void ConfigurarPermisos()
+        private async void BtnFormulario_Click(object sender, EventArgs e)
         {
-            var usuario = Program.UsuarioActual;
-
-            // Ocultar/mostrar botones según permisos
-            btnDashboard.Visible = PermisosBLL.TienePermiso(usuario, "Dashboard.Ver");
-            btnDonantes.Visible = PermisosBLL.TienePermiso(usuario, "Donantes.Ver");
-            btnDonaciones.Visible = PermisosBLL.TienePermiso(usuario, "Donaciones.Ver");
-            btnInventario.Visible = PermisosBLL.TienePermiso(usuario, "Inventario.Ver");
-            btnSolicitudes.Visible = PermisosBLL.TienePermiso(usuario, "Solicitudes.Ver");
-            btnReportes.Visible = PermisosBLL.TienePermiso(usuario, "Reportes.Ver");
-
-            // Agregar botón de auditoría si tiene permiso
-            if (PermisosBLL.TienePermiso(usuario, "Auditoria.Ver"))
+            if (sender is Button btn && btn.Tag is string nombreFormulario)
             {
-                AgregarBotonAuditoria();
-            }
-
-            // Reorganizar posiciones de botones visibles
-            ReorganizarBotonesMenu();
-        }
-
-        private void AgregarBotonAuditoria()
-        {
-            Button btnAuditoria = new Button
-            {
-                Name = "btnAuditoria",
-                Text = "🔒  Auditoría",
-                Dock = DockStyle.Top,
-                FlatStyle = FlatStyle.Flat,
-                Font = new Font("Segoe UI", 10F),
-                ForeColor = Color.White,
-                Height = 45,
-                Padding = new Padding(15, 0, 0, 0),
-                TextAlign = ContentAlignment.MiddleLeft
-            };
-
-            btnAuditoria.FlatAppearance.BorderSize = 0;
-            btnAuditoria.Click += async (s, e) =>
-            {
-                ActivarBoton(btnAuditoria);
-                await AbrirFormularioAsync<FrmAuditoria>("Cargando Auditoría...");
-            };
-
-            ConfigurarHoverBoton(btnAuditoria);
-
-            // Insertar después de reportes
-            panelMenu.Controls.Add(btnAuditoria);
-            btnAuditoria.BringToFront();
-        }
-
-        private void ReorganizarBotonesMenu()
-        {
-            // Obtener todos los botones visibles del menú
-            var botonesMenu = new System.Collections.Generic.List<Button>();
-
-            foreach (Control control in panelMenu.Controls)
-            {
-                if (control is Button btn && btn.Visible &&
-                    btn != btnCerrarSesion && btn != btnAcercaDe)
+                if (!MenuConfig.TieneAcceso(Program.UsuarioActual, nombreFormulario))
                 {
-                    botonesMenu.Add(btn);
+                    MostrarAccesoDenegado();
+                    return;
                 }
-            }
 
-            // Reordenar de arriba hacia abajo
-            int topPosition = panelUsuario.Bottom;
-            foreach (var btn in botonesMenu)
+                ActivarBoton(btn);
+                await AbrirFormularioPorNombre(nombreFormulario);
+            }
+        }
+
+        private async Task AbrirFormularioPorNombre(string nombreFormulario)
+        {
+            try
             {
-                btn.Top = topPosition;
-                topPosition = btn.Bottom;
+                panelContenedor.ShowLoading($"Cargando {nombreFormulario}...");
+
+                var tipo = Type.GetType($"BancoDeSangreApp.Forms.{nombreFormulario}");
+
+                if (tipo == null)
+                {
+                    throw new Exception($"No se encontró el formulario: {nombreFormulario}");
+                }
+
+                Form formulario = await Task.Run(() =>
+                {
+                    Form frm = (Form)Activator.CreateInstance(tipo);
+                    frm.TopLevel = false;
+                    frm.FormBorderStyle = FormBorderStyle.None;
+                    frm.Dock = DockStyle.Fill;
+                    return frm;
+                });
+
+                foreach (Control control in panelContenedor.Controls)
+                {
+                    if (control is Form f)
+                    {
+                        f.Close();
+                        f.Dispose();
+                    }
+                }
+                panelContenedor.Controls.Clear();
+
+                panelContenedor.Controls.Add(formulario);
+                formulario.Show();
+
+                panelContenedor.HideLoading();
+            }
+            catch (Exception ex)
+            {
+                panelContenedor.HideLoading();
+                MessageBox.Show(
+                    $"Error al cargar el formulario:\n{ex.Message}",
+                    "Error",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                );
             }
         }
 
         private void ConfigurarEventosMenu()
         {
-            ConfigurarHoverBoton(btnDashboard);
-            ConfigurarHoverBoton(btnDonantes);
-            ConfigurarHoverBoton(btnDonaciones);
-            ConfigurarHoverBoton(btnInventario);
-            ConfigurarHoverBoton(btnSolicitudes);
-            ConfigurarHoverBoton(btnReportes);
-
             if (btnCerrarSesion != null)
             {
                 btnCerrarSesion.MouseEnter += (s, e) =>
@@ -185,66 +406,49 @@ namespace BancoDeSangreApp.Forms
 
         private async void FrmMain_Load(object sender, EventArgs e)
         {
-            // Cargar el primer formulario disponible
-            if (btnDashboard.Visible)
-            {
-                await AbrirFormularioAsync<FrmDashboard>("Cargando Dashboard...");
-                btnActivo = btnDashboard;
-            }
-            else if (btnInventario.Visible)
-            {
-                await AbrirFormularioAsync<FrmInventario>("Cargando Inventario...");
-                btnActivo = btnInventario;
-            }
-            else if (btnSolicitudes.Visible)
-            {
-                await AbrirFormularioAsync<FrmSolicitudesMedicas>("Cargando Solicitudes...");
-                btnActivo = btnSolicitudes;
-            }
-        }
+            // Obtener el primer formulario disponible
+            var categorias = MenuConfig.ObtenerCategoriasDisponibles(Program.UsuarioActual);
 
-        private async Task AbrirFormularioAsync<T>(string mensajeCarga = "Cargando...")
-            where T : Form, new()
-        {
-            try
+            if (categorias.Any() && categorias[0].Formularios.Any())
             {
-                panelContenedor.ShowLoading(mensajeCarga);
+                // Esperar un poco para que los controles se rendericen
+                await Task.Delay(100);
 
-                Form formulario = await Task.Run(() =>
+                // Expandir automáticamente la primera categoría
+                var primerPanelCategoria = panelMenuScroll.Controls // CAMBIO: panelMenuScroll
+                    .OfType<Panel>()
+                    .Where(p => p.Name != null && p.Name.StartsWith("panelCategoria_"))
+                    .FirstOrDefault();
+
+                if (primerPanelCategoria != null)
                 {
-                    T frm = new T
+                    var btnCategoria = primerPanelCategoria.Controls.OfType<Button>().FirstOrDefault();
+                    if (btnCategoria != null && btnCategoria.Text.Contains("▶"))
                     {
-                        TopLevel = false,
-                        FormBorderStyle = FormBorderStyle.None,
-                        Dock = DockStyle.Fill
-                    };
-                    return frm;
-                });
-
-                foreach (Control control in panelContenedor.Controls)
-                {
-                    if (control is Form f)
-                    {
-                        f.Close();
-                        f.Dispose();
+                        // Simular click para expandir
+                        btnCategoria.PerformClick();
                     }
                 }
-                panelContenedor.Controls.Clear();
 
-                panelContenedor.Controls.Add(formulario);
-                formulario.Show();
+                // Cargar el primer formulario
+                var primerFormulario = categorias[0].Formularios[0].Nombre;
+                await AbrirFormularioPorNombre(primerFormulario);
 
-                panelContenedor.HideLoading();
-            }
-            catch (Exception ex)
-            {
-                panelContenedor.HideLoading();
-                MessageBox.Show(
-                    $"Error al cargar el formulario:\n{ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
+                // Activar el primer botón
+                await Task.Delay(200);
+
+                var primerBoton = panelMenuScroll.Controls // CAMBIO: panelMenuScroll
+                    .OfType<Panel>()
+                    .Where(p => p.Name != null && p.Name.StartsWith("panelCategoria_"))
+                    .SelectMany(p => p.Controls.OfType<Panel>())
+                    .SelectMany(p => p.Controls.OfType<Button>())
+                    .FirstOrDefault(b => b.Tag is string tag && tag == primerFormulario);
+
+                if (primerBoton != null)
+                {
+                    btnActivo = primerBoton;
+                    primerBoton.BackColor = Color.FromArgb(51, 122, 183);
+                }
             }
         }
 
@@ -257,85 +461,6 @@ namespace BancoDeSangreApp.Forms
 
             btnActivo = boton;
             boton.BackColor = Color.FromArgb(51, 122, 183);
-        }
-
-        // ==================== EVENTOS DE BOTONES ====================
-
-        private async void btnDashboard_Click(object sender, EventArgs e)
-        {
-            if (!PermisosBLL.TienePermiso(Program.UsuarioActual, "Dashboard.Ver"))
-            {
-                MostrarAccesoDenegado();
-                return;
-            }
-
-            ActivarBoton(btnDashboard);
-            await AbrirFormularioAsync<FrmDashboard>("Cargando Dashboard...");
-        }
-
-        private async void btnDonantes_Click(object sender, EventArgs e)
-        {
-            if (!PermisosBLL.TienePermiso(Program.UsuarioActual, "Donantes.Ver"))
-            {
-                MostrarAccesoDenegado();
-                return;
-            }
-
-            ActivarBoton(btnDonantes);
-            await AbrirFormularioAsync<FrmDonantes>("Cargando Donantes...");
-        }
-        private async void btnCentros_Click(object sender, EventArgs e)
-        {
-            ActivarBoton(btnCentros);
-            await AbrirFormularioAsync<FrmCentrosRecoleccion>("Cargando Centros...");
-        }
-
-        private async void btnDonaciones_Click(object sender, EventArgs e)
-        {
-            if (!PermisosBLL.TienePermiso(Program.UsuarioActual, "Donaciones.Ver"))
-            {
-                MostrarAccesoDenegado();
-                return;
-            }
-
-            ActivarBoton(btnDonaciones);
-            await AbrirFormularioAsync<FrmDonaciones>("Cargando Centros...");
-        }
-
-        private async void btnInventario_Click(object sender, EventArgs e)
-        {
-            if (!PermisosBLL.TienePermiso(Program.UsuarioActual, "Inventario.Ver"))
-            {
-                MostrarAccesoDenegado();
-                return;
-            }
-
-            ActivarBoton(btnInventario);
-            await AbrirFormularioAsync<FrmInventario>("Cargando Inventario...");
-        }
-
-        private async void btnSolicitudes_Click(object sender, EventArgs e)
-        {
-            if (!PermisosBLL.TienePermiso(Program.UsuarioActual, "Solicitudes.Ver"))
-            {
-                MostrarAccesoDenegado();
-                return;
-            }
-
-            ActivarBoton(btnSolicitudes);
-            await AbrirFormularioAsync<FrmSolicitudesMedicas>("Cargando Solicitudes...");
-        }
-
-        private async void btnReportes_Click(object sender, EventArgs e)
-        {
-            if (!PermisosBLL.TienePermiso(Program.UsuarioActual, "Reportes.Ver"))
-            {
-                MostrarAccesoDenegado();
-                return;
-            }
-
-            ActivarBoton(btnReportes);
-            await AbrirFormularioAsync<FrmReportes>("Generando Reportes...");
         }
 
         private void btnAcercaDe_Click(object sender, EventArgs e)
@@ -402,15 +527,6 @@ namespace BancoDeSangreApp.Forms
                 }
             }
             base.OnFormClosing(e);
-        }
-
-        private void panelContenedor_Paint(object sender, PaintEventArgs e)
-        {
-        }
-
-        private void FrmMain_Load_1(object sender, EventArgs e)
-        {
-
         }
     }
 }
