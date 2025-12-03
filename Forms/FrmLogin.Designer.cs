@@ -45,12 +45,8 @@ namespace BancoDeSangreApp.Forms
             this.lblContrasena = new System.Windows.Forms.Label();
             this.txtUsuario = new System.Windows.Forms.TextBox();
             this.lblUsuario = new System.Windows.Forms.Label();
-            this.panelRegistro = new System.Windows.Forms.Panel();
-            this.btnRegistrarse = new System.Windows.Forms.Button();
-            this.lblNoTieneCuenta = new System.Windows.Forms.Label();
             this.panelHeader.SuspendLayout();
             this.panelFormulario.SuspendLayout();
-            this.panelRegistro.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelHeader
@@ -112,7 +108,7 @@ namespace BancoDeSangreApp.Forms
             this.lnkRecuperarContrasena.TabIndex = 7;
             this.lnkRecuperarContrasena.TabStop = true;
             this.lnkRecuperarContrasena.Text = "¿Olvidó su contraseña?";
-            this.lnkRecuperarContrasena.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lnkRecuperarContrasena_LinkClicked);
+            this.lnkRecuperarContrasena.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LnkRecuperarContrasena_LinkClicked);
             // 
             // btnCancelar
             // 
@@ -127,7 +123,7 @@ namespace BancoDeSangreApp.Forms
             this.btnCancelar.TabIndex = 6;
             this.btnCancelar.Text = "Cancelar";
             this.btnCancelar.UseVisualStyleBackColor = false;
-            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            this.btnCancelar.Click += new System.EventHandler(this.BtnCancelar_Click);
             // 
             // btnIniciarSesion
             // 
@@ -142,7 +138,7 @@ namespace BancoDeSangreApp.Forms
             this.btnIniciarSesion.TabIndex = 5;
             this.btnIniciarSesion.Text = "Iniciar Sesión";
             this.btnIniciarSesion.UseVisualStyleBackColor = false;
-            this.btnIniciarSesion.Click += new System.EventHandler(this.btnIniciarSesion_Click);
+            this.btnIniciarSesion.Click += new System.EventHandler(this.BtnIniciarSesion_Click);
             // 
             // chkMostrarContrasena
             // 
@@ -154,7 +150,7 @@ namespace BancoDeSangreApp.Forms
             this.chkMostrarContrasena.TabIndex = 4;
             this.chkMostrarContrasena.Text = "Mostrar contraseña";
             this.chkMostrarContrasena.UseVisualStyleBackColor = true;
-            this.chkMostrarContrasena.CheckedChanged += new System.EventHandler(this.chkMostrarContrasena_CheckedChanged);
+            this.chkMostrarContrasena.CheckedChanged += new System.EventHandler(this.ChkMostrarContrasena_CheckedChanged);
             // 
             // txtContrasena
             // 
@@ -165,7 +161,7 @@ namespace BancoDeSangreApp.Forms
             this.txtContrasena.Size = new System.Drawing.Size(344, 25);
             this.txtContrasena.TabIndex = 3;
             this.txtContrasena.UseSystemPasswordChar = true;
-            this.txtContrasena.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_KeyPress);
+            this.txtContrasena.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Txt_KeyPress);
             // 
             // lblContrasena
             // 
@@ -185,7 +181,7 @@ namespace BancoDeSangreApp.Forms
             this.txtUsuario.Name = "txtUsuario";
             this.txtUsuario.Size = new System.Drawing.Size(344, 25);
             this.txtUsuario.TabIndex = 1;
-            this.txtUsuario.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txt_KeyPress);
+            this.txtUsuario.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.Txt_KeyPress);
             // 
             // lblUsuario
             // 
@@ -197,55 +193,19 @@ namespace BancoDeSangreApp.Forms
             this.lblUsuario.TabIndex = 0;
             this.lblUsuario.Text = "Usuario:";
             // 
-            // panelRegistro
-            // 
-            this.panelRegistro.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(249)))), ((int)(((byte)(250)))));
-            this.panelRegistro.Controls.Add(this.btnRegistrarse);
-            this.panelRegistro.Controls.Add(this.lblNoTieneCuenta);
-            this.panelRegistro.Location = new System.Drawing.Point(30, 320);
-            this.panelRegistro.Name = "panelRegistro";
-            this.panelRegistro.Size = new System.Drawing.Size(390, 50);
-            this.panelRegistro.TabIndex = 2;
-            // 
-            // btnRegistrarse
-            // 
-            this.btnRegistrarse.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnRegistrarse.FlatAppearance.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.btnRegistrarse.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnRegistrarse.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.btnRegistrarse.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(123)))), ((int)(((byte)(255)))));
-            this.btnRegistrarse.Location = new System.Drawing.Point(184, 10);
-            this.btnRegistrarse.Name = "btnRegistrarse";
-            this.btnRegistrarse.Size = new System.Drawing.Size(140, 30);
-            this.btnRegistrarse.TabIndex = 1;
-            this.btnRegistrarse.Text = "Registrarse aquí";
-            this.btnRegistrarse.UseVisualStyleBackColor = true;
-            this.btnRegistrarse.Click += new System.EventHandler(this.btnRegistrarse_Click);
-            // 
-            // lblNoTieneCuenta
-            // 
-            this.lblNoTieneCuenta.AutoSize = true;
-            this.lblNoTieneCuenta.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.lblNoTieneCuenta.Location = new System.Drawing.Point(60, 18);
-            this.lblNoTieneCuenta.Name = "lblNoTieneCuenta";
-            this.lblNoTieneCuenta.Size = new System.Drawing.Size(124, 15);
-            this.lblNoTieneCuenta.TabIndex = 0;
-            this.lblNoTieneCuenta.Text = "¿No tiene una cuenta?";
-            // 
             // FrmLogin
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.ClientSize = new System.Drawing.Size(450, 390);
-            this.Controls.Add(this.panelRegistro);
+            this.ClientSize = new System.Drawing.Size(450, 341);
             this.Controls.Add(this.panelFormulario);
             this.Controls.Add(this.panelHeader);
-            this.MinimumSize = new System.Drawing.Size(466, 429);
-            this.MaximumSize = new System.Drawing.Size(466, 429);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(466, 380);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(466, 380);
             this.Name = "FrmLogin";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Iniciar Sesión - Banco de Sangre";
@@ -254,8 +214,6 @@ namespace BancoDeSangreApp.Forms
             this.panelHeader.PerformLayout();
             this.panelFormulario.ResumeLayout(false);
             this.panelFormulario.PerformLayout();
-            this.panelRegistro.ResumeLayout(false);
-            this.panelRegistro.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -274,8 +232,5 @@ namespace BancoDeSangreApp.Forms
         private System.Windows.Forms.Label lblContrasena;
         private System.Windows.Forms.TextBox txtUsuario;
         private System.Windows.Forms.Label lblUsuario;
-        private System.Windows.Forms.Panel panelRegistro;
-        private System.Windows.Forms.Button btnRegistrarse;
-        private System.Windows.Forms.Label lblNoTieneCuenta;
     }
 }

@@ -11,7 +11,7 @@ namespace BancoDeSangreApp.Forms
 {
     public partial class FrmLogin : Form
     {
-        private UsuarioBLL _usuarioBLL;
+        private readonly UsuarioBLL _usuarioBLL;
         private int _intentosFallidos = 0;
         private const int MAX_INTENTOS = 3;
 
@@ -96,7 +96,7 @@ namespace BancoDeSangreApp.Forms
             }
         }
 
-        private async void btnIniciarSesion_Click(object sender, EventArgs e)
+        private async void BtnIniciarSesion_Click(object sender, EventArgs e)
         {
             await IniciarSesionAsync();
         }
@@ -127,7 +127,6 @@ namespace BancoDeSangreApp.Forms
 
                 // Deshabilitar controles
                 btnIniciarSesion.Enabled = false;
-                btnRegistrarse.Enabled = false;
                 txtUsuario.Enabled = false;
                 txtContrasena.Enabled = false;
 
@@ -193,7 +192,6 @@ namespace BancoDeSangreApp.Forms
 
                     // Re-habilitar controles
                     btnIniciarSesion.Enabled = true;
-                    btnRegistrarse.Enabled = true;
                     txtUsuario.Enabled = true;
                     txtContrasena.Enabled = true;
                 }
@@ -204,7 +202,6 @@ namespace BancoDeSangreApp.Forms
 
                 // Re-habilitar controles
                 btnIniciarSesion.Enabled = true;
-                btnRegistrarse.Enabled = true;
                 txtUsuario.Enabled = true;
                 txtContrasena.Enabled = true;
 
@@ -217,49 +214,7 @@ namespace BancoDeSangreApp.Forms
             }
         }
 
-        private async void btnRegistrarse_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Mostrar loading mientras se abre el formulario
-                this.ShowLoading("Abriendo registro...");
-
-                // Pequeña pausa para que se vea el loading
-                await Task.Delay(100);
-
-                this.HideLoading();
-
-                FrmRegistro frmReg = new FrmRegistro();
-
-                if (frmReg.ShowDialog() == DialogResult.OK)
-                {
-                    MessageBox.Show(
-                        "Usuario registrado exitosamente.\nYa puede iniciar sesión.",
-                        "Registro Exitoso",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-
-                    if (!string.IsNullOrEmpty(frmReg.UsuarioRegistrado))
-                    {
-                        txtUsuario.Text = frmReg.UsuarioRegistrado;
-                        txtContrasena.Focus();
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                this.HideLoading();
-                MessageBox.Show(
-                    $"Error al abrir registro:\n{ex.Message}",
-                    "Error",
-                    MessageBoxButtons.OK,
-                    MessageBoxIcon.Error
-                );
-            }
-        }
-
-        private async void txt_KeyPress(object sender, KeyPressEventArgs e)
+        private async void Txt_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (e.KeyChar == (char)Keys.Enter)
             {
@@ -268,12 +223,12 @@ namespace BancoDeSangreApp.Forms
             }
         }
 
-        private void chkMostrarContrasena_CheckedChanged(object sender, EventArgs e)
+        private void ChkMostrarContrasena_CheckedChanged(object sender, EventArgs e)
         {
             txtContrasena.UseSystemPasswordChar = !chkMostrarContrasena.Checked;
         }
 
-        private void btnCancelar_Click(object sender, EventArgs e)
+        private void BtnCancelar_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show(
                 "¿Está seguro de que desea salir?",
@@ -285,7 +240,7 @@ namespace BancoDeSangreApp.Forms
             }
         }
 
-        private void lnkRecuperarContrasena_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        private void LnkRecuperarContrasena_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             MessageBox.Show(
                 "Para recuperar su contraseña, contacte al administrador del sistema.\n\n" +
