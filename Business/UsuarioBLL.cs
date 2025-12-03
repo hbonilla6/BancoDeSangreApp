@@ -7,9 +7,6 @@ using System.Data.SqlClient;
 
 namespace BancoDeSangreApp.Business
 {
-    /// <summary>
-    /// Clase de lógica de negocio para la gestión de usuarios
-    /// </summary>
     public class UsuarioBLL
     {
         private readonly ConexionDB _db;
@@ -19,9 +16,39 @@ namespace BancoDeSangreApp.Business
             _db = ConexionDB.Instancia;
         }
 
-        /// <summary>
-        /// Autentica un usuario en el sistema
-        /// </summary>
+        public bool CambiarContrasena(int idUsuario, string nuevaContrasena)
+        {
+            try
+            {
+                string claveHash = SeguridadBLL.GenerarHash(nuevaContrasena);
+
+                string query = @"
+                    UPDATE Usuarios 
+                    SET ClaveHash = @ClaveHash,
+                        FechaModificacion = SYSDATETIME()
+                    WHERE IdUsuario = @IdUsuario";
+
+                SqlParameter[] parametros = {
+                    new SqlParameter("@IdUsuario", idUsuario),
+                    new SqlParameter("@ClaveHash", claveHash)
+                };
+
+                int filasAfectadas = _db.EjecutarComando(query, parametros);
+
+                if (filasAfectadas > 0)
+                {
+                    RegistrarAuditoria(idUsuario, "Usuarios", "CAMBIO_CONTRASEÑA",
+                        idUsuario.ToString(), null, "Contraseña actualizada");
+                }
+
+                return filasAfectadas > 0;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al cambiar contraseña: {ex.Message}", ex);
+            }
+        }
+
         public LoginResult IniciarSesion(string nombreUsuario, string clave)
         {
             LoginResult result = new LoginResult();
@@ -98,9 +125,6 @@ namespace BancoDeSangreApp.Business
             }
         }
 
-        /// <summary>
-        /// Registra un nuevo usuario en el sistema
-        /// </summary>
         public (bool exito, string mensaje) RegistrarUsuario(Usuario usuario, string clave, int[] rolesIds)
         {
             try
@@ -153,6 +177,113 @@ namespace BancoDeSangreApp.Business
             }
         }
 
+        public DataTable ObtenerUsuarios(int idEntidad)
+        {
+            try
+            {
+                string query = @"
+                    SELECT 
+                        u.IdUsuario,
+                        u.Usuario,
+                        u.NombreCompleto,
+                        u.Correo,
+                        u.Telefono,
+                        u.Activo,
+                        u.UltimoAcceso,
+                        u.FechaCreacion,
+                        STRING_AGG(r.Nombre, ', ') AS Roles
+                    FROM Usuarios u
+                    LEFT JOIN UsuarioRoles ur ON u.IdUsuario = ur.IdUsuario
+                    LEFT JOIN Roles r ON ur.IdRol = r.IdRol
+                    WHERE u.IdEntidad = @IdEntidad
+                    GROUP BY u.IdUsuario, u.Usuario, u.NombreCompleto, u.Correo, u.Telefono, u.Activo, u.UltimoAcceso, u.FechaCreacion
+                    ORDER BY u.NombreCompleto";
+
+                SqlParameter[] parametros = {
+                    new SqlParameter("@IdEntidad", idEntidad)
+                };
+
+                return _db.EjecutarConsulta(query, parametros);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al obtener usuarios: {ex.Message}", ex);
+            }
+        }
+
+        public (bool exito, string mensaje) ActualizarUsuario(Usuario usuario)
+        {
+            try
+            {
+                string query = @"
+                    UPDATE Usuarios 
+                    SET NombreCompleto = @NombreCompleto,
+                        Correo = @Correo,
+                        Telefono = @Telefono,
+                        Activo = @Activo,
+                        FechaModificacion = SYSDATETIME()
+                    WHERE IdUsuario = @IdUsuario";
+
+                SqlParameter[] parametros = {
+                    new SqlParameter("@IdUsuario", usuario.IdUsuario),
+                    new SqlParameter("@NombreCompleto", usuario.NombreCompleto),
+                    new SqlParameter("@Correo", (object)usuario.Correo ?? DBNull.Value),
+                    new SqlParameter("@Telefono", (object)usuario.Telefono ?? DBNull.Value),
+                    new SqlParameter("@Activo", usuario.Activo)
+                };
+
+                int filasAfectadas = _db.EjecutarComando(query, parametros);
+
+                if (filasAfectadas > 0)
+                {
+                    RegistrarAuditoria(usuario.IdUsuario, "Usuarios", "UPDATE",
+                        usuario.IdUsuario.ToString(), null, $"Usuario actualizado");
+                    return (true, "Usuario actualizado exitosamente.");
+                }
+                else
+                {
+                    return (false, "No se pudo actualizar el usuario.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error al actualizar usuario: {ex.Message}");
+            }
+        }
+
+        public (bool exito, string mensaje) EliminarUsuario(int idUsuario)
+        {
+            try
+            {
+                string query = @"
+                    UPDATE Usuarios 
+                    SET Activo = 0,
+                        FechaModificacion = SYSDATETIME()
+                    WHERE IdUsuario = @IdUsuario";
+
+                SqlParameter[] parametros = {
+                    new SqlParameter("@IdUsuario", idUsuario)
+                };
+
+                int filasAfectadas = _db.EjecutarComando(query, parametros);
+
+                if (filasAfectadas > 0)
+                {
+                    RegistrarAuditoria(idUsuario, "Usuarios", "DELETE",
+                        idUsuario.ToString(), null, "Usuario desactivado");
+                    return (true, "Usuario eliminado exitosamente.");
+                }
+                else
+                {
+                    return (false, "No se pudo eliminar el usuario.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error al eliminar usuario: {ex.Message}");
+            }
+        }
+
         private bool ExisteUsuario(string nombreUsuario)
         {
             string query = "SELECT COUNT(*) FROM Usuarios WHERE Usuario = @Usuario";
@@ -161,7 +292,7 @@ namespace BancoDeSangreApp.Business
             return count > 0;
         }
 
-        private List<Rol> ObtenerRolesUsuario(int idUsuario)
+        public List<Rol> ObtenerRolesUsuario(int idUsuario)
         {
             List<Rol> roles = new List<Rol>();
             string query = @"

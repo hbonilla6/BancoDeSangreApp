@@ -1,170 +1,21 @@
 ﻿using BancoDeSangreApp.Business;
-using BancoDeSangreApp.Data;
 using System;
-using System.Data.SqlClient;
+using System.Drawing;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace BancoDeSangreApp.Forms
 {
     public partial class FrmCambiarContrasena : Form
     {
-        private readonly int _idUsuario;
-
-        public FrmCambiarContrasena(int idUsuario)
+        public FrmCambiarContrasena()
         {
             InitializeComponent();
-            _idUsuario = idUsuario;
         }
 
         private void FrmCambiarContrasena_Load(object sender, EventArgs e)
         {
-            CargarDatosUsuario();
-        }
-
-        private void CargarDatosUsuario()
-        {
-            try
-            {
-                string query = @"
-                    SELECT Usuario, NombreCompleto 
-                    FROM Usuarios 
-                    WHERE IdUsuario = @IdUsuario";
-
-                SqlParameter[] parametros = {
-                    new SqlParameter("@IdUsuario", _idUsuario)
-                };
-
-                var dt = ConexionDB.Instancia.EjecutarConsulta(query, parametros);
-
-                if (dt.Rows.Count > 0)
-                {
-                    lblUsuarioInfo.Text = $"Usuario: {dt.Rows[0]["Usuario"]} - {dt.Rows[0]["NombreCompleto"]}";
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cargar usuario: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.Close();
-            }
-        }
-
-        private void btnGuardar_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Validaciones
-                if (string.IsNullOrWhiteSpace(txtNuevaContrasena.Text))
-                {
-                    MessageBox.Show("Ingrese la nueva contraseña.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtNuevaContrasena.Focus();
-                    return;
-                }
-
-                if (txtNuevaContrasena.Text != txtConfirmarContrasena.Text)
-                {
-                    MessageBox.Show("Las contraseñas no coinciden.",
-                        "Validación", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtConfirmarContrasena.Focus();
-                    return;
-                }
-
-                // Validar fortaleza de contraseña
-                string errorFortaleza = SeguridadBLL.ValidarFortalezaClave(txtNuevaContrasena.Text);
-                if (!string.IsNullOrEmpty(errorFortaleza))
-                {
-                    MessageBox.Show(errorFortaleza,
-                        "Contraseña Débil", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    txtNuevaContrasena.Focus();
-                    return;
-                }
-
-                // Confirmar cambio
-                var confirmacion = MessageBox.Show(
-                    "¿Está seguro de cambiar la contraseña de este usuario?",
-                    "Confirmar Cambio",
-                    MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question);
-
-                if (confirmacion == DialogResult.Yes)
-                {
-                    // Generar hash de nueva contraseña
-                    string hash = SeguridadBLL.GenerarHash(txtNuevaContrasena.Text);
-
-                    // Actualizar en base de datos
-                    string query = @"
-                        UPDATE Usuarios 
-                        SET HashContrasena = @Hash,
-                            FechaModificacion = SYSDATETIME()
-                        WHERE IdUsuario = @IdUsuario";
-
-                    SqlParameter[] parametros = {
-                        new SqlParameter("@Hash", hash),
-                        new SqlParameter("@IdUsuario", _idUsuario)
-                    };
-
-                    ConexionDB.Instancia.EjecutarComando(query, parametros);
-
-                    // Registrar en auditoría
-                    try
-                    {
-                        RegistrarAuditoria(
-                            Program.UsuarioActual.IdUsuario,
-                            "Usuarios",
-                            "Cambio de Contraseña",
-                            _idUsuario.ToString(),
-                            null,
-                            $"Se cambió la contraseña del usuario ID {_idUsuario}"
-                        );
-                    }
-                    catch { } // No fallar si la auditoría falla
-
-                    MessageBox.Show("Contraseña actualizada correctamente.",
-                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                    this.DialogResult = DialogResult.OK;
-                    this.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al cambiar contraseña: {ex.Message}",
-                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void RegistrarAuditoria(int? idUsuario, string entidad, string operacion,
-            string clavePrimaria, string valorAnterior, string valorNuevo)
-        {
-            try
-            {
-                string query = @"
-                    INSERT INTO BitacoraAuditoria 
-                    (IdUsuario, Entidad, Operacion, ClavePrimaria, ValorAnterior, ValorNuevo, FechaAccion)
-                    VALUES (@IdUsuario, @Entidad, @Operacion, @ClavePrimaria, @ValorAnterior, @ValorNuevo, SYSDATETIME())";
-
-                SqlParameter[] parametros = {
-                    new SqlParameter("@IdUsuario", (object)idUsuario ?? DBNull.Value),
-                    new SqlParameter("@Entidad", entidad),
-                    new SqlParameter("@Operacion", operacion),
-                    new SqlParameter("@ClavePrimaria", clavePrimaria),
-                    new SqlParameter("@ValorAnterior", (object)valorAnterior ?? DBNull.Value),
-                    new SqlParameter("@ValorNuevo", (object)valorNuevo ?? DBNull.Value)
-                };
-
-                ConexionDB.Instancia.EjecutarComando(query, parametros);
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Debug.WriteLine($"Error en auditoría: {ex.Message}");
-            }
-        }
-
-        private void btnCancelar_Click(object sender, EventArgs e)
-        {
-            this.DialogResult = DialogResult.Cancel;
-            this.Close();
+            lblUsuarioInfo.Text = $"Usuario: {Program.UsuarioActual.NombreCompleto}";
         }
 
         private void chkMostrarContrasenas_CheckedChanged(object sender, EventArgs e)
@@ -175,53 +26,140 @@ namespace BancoDeSangreApp.Forms
 
         private void txtNuevaContrasena_TextChanged(object sender, EventArgs e)
         {
-            ActualizarIndicadorFortaleza();
-        }
+            string password = txtNuevaContrasena.Text;
 
-        private void ActualizarIndicadorFortaleza()
-        {
-            string contrasena = txtNuevaContrasena.Text;
-
-            if (string.IsNullOrWhiteSpace(contrasena))
+            if (string.IsNullOrEmpty(password))
             {
                 lblFortaleza.Text = "";
-                lblFortaleza.ForeColor = System.Drawing.Color.Gray;
+                lblFortaleza.ForeColor = Color.Gray;
                 return;
             }
 
-            int puntos = 0;
+            int fortaleza = EvaluarFortalezaContrasena(password);
 
-            // Longitud
-            if (contrasena.Length >= 8) puntos++;
-            if (contrasena.Length >= 12) puntos++;
-
-            // Mayúsculas
-            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"[A-Z]")) puntos++;
-
-            // Minúsculas
-            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"[a-z]")) puntos++;
-
-            // Números
-            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"[0-9]")) puntos++;
-
-            // Caracteres especiales
-            if (System.Text.RegularExpressions.Regex.IsMatch(contrasena, @"[!@#$%^&*(),.?""':{}|<>]")) puntos++;
-
-            // Determinar fortaleza
-            if (puntos <= 2)
+            if (fortaleza < 2)
             {
-                lblFortaleza.Text = "Fortaleza: Débil ❌";
-                lblFortaleza.ForeColor = System.Drawing.Color.Red;
+                lblFortaleza.Text = "⚠️ Débil";
+                lblFortaleza.ForeColor = Color.FromArgb(192, 57, 43);
             }
-            else if (puntos <= 4)
+            else if (fortaleza < 4)
             {
-                lblFortaleza.Text = "Fortaleza: Media ⚠️";
-                lblFortaleza.ForeColor = System.Drawing.Color.Orange;
+                lblFortaleza.Text = "⚡ Media";
+                lblFortaleza.ForeColor = Color.FromArgb(243, 156, 18);
             }
             else
             {
-                lblFortaleza.Text = "Fortaleza: Fuerte ✅";
-                lblFortaleza.ForeColor = System.Drawing.Color.Green;
+                lblFortaleza.Text = "✅ Fuerte";
+                lblFortaleza.ForeColor = Color.FromArgb(39, 174, 96);
+            }
+        }
+
+        private int EvaluarFortalezaContrasena(string password)
+        {
+            int puntos = 0;
+            if (password.Length >= 8) puntos++;
+            if (password.Length >= 12) puntos++;
+            if (Regex.IsMatch(password, @"[a-z]")) puntos++;
+            if (Regex.IsMatch(password, @"[A-Z]")) puntos++;
+            if (Regex.IsMatch(password, @"[0-9]")) puntos++;
+            if (Regex.IsMatch(password, @"[!@#$%^&*(),.?""':{}|<>]")) puntos++;
+            return puntos;
+        }
+
+        private void btnGuardar_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(txtNuevaContrasena.Text))
+                {
+                    MessageBox.Show("Debe ingresar una nueva contraseña.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNuevaContrasena.Focus();
+                    return;
+                }
+
+                if (txtNuevaContrasena.Text.Length < 8)
+                {
+                    MessageBox.Show("La contraseña debe tener al menos 8 caracteres.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNuevaContrasena.Focus();
+                    return;
+                }
+
+                if (!ValidarComplejidadContrasena(txtNuevaContrasena.Text))
+                {
+                    MessageBox.Show(
+                        "La contraseña debe incluir:\n" +
+                        "- Al menos una letra mayúscula\n" +
+                        "- Al menos una letra minúscula\n" +
+                        "- Al menos un número\n" +
+                        "- Al menos un carácter especial (!@#$%^&*)",
+                        "Contraseña débil", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtNuevaContrasena.Focus();
+                    return;
+                }
+
+                if (txtNuevaContrasena.Text != txtConfirmarContrasena.Text)
+                {
+                    MessageBox.Show("Las contraseñas no coinciden.", "Validación",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    txtConfirmarContrasena.Focus();
+                    return;
+                }
+
+                DialogResult confirmacion = MessageBox.Show(
+                    "¿Está seguro que desea cambiar su contraseña?",
+                    "Confirmar Cambio", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (confirmacion != DialogResult.Yes)
+                    return;
+
+                var usuariosBLL = new UsuarioBLL();
+                bool resultado = usuariosBLL.CambiarContrasena(
+                    Program.UsuarioActual.IdUsuario,
+                    txtNuevaContrasena.Text);
+
+                if (resultado)
+                {
+                    MessageBox.Show(
+                        "✅ Contraseña cambiada exitosamente.\n\nPor seguridad, se cerrará su sesión.",
+                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "❌ No se pudo cambiar la contraseña.\nIntente nuevamente o contacte al administrador.",
+                        "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cambiar la contraseña:\n{ex.Message}",
+                    "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private bool ValidarComplejidadContrasena(string password)
+        {
+            if (!Regex.IsMatch(password, @"[A-Z]")) return false;
+            if (!Regex.IsMatch(password, @"[a-z]")) return false;
+            if (!Regex.IsMatch(password, @"[0-9]")) return false;
+            if (!Regex.IsMatch(password, @"[!@#$%^&*(),.?""':{}|<>]")) return false;
+            return true;
+        }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            DialogResult resultado = MessageBox.Show(
+                "¿Desea cancelar el cambio de contraseña?",
+                "Cancelar", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            if (resultado == DialogResult.Yes)
+            {
+                this.DialogResult = DialogResult.Cancel;
+                this.Close();
             }
         }
     }

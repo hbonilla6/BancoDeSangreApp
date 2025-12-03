@@ -162,6 +162,12 @@
     <Compile Include="Forms\FrmSolicitudesMedicas.Designer.cs">
       <DependentUpon>FrmSolicitudesMedicas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmUsuarioDetalle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmUsuarioDetalle.Designer.cs">
+      <DependentUpon>FrmUsuarioDetalle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmUsuarios.cs">
       <SubType>Form</SubType>
     </Compile>
