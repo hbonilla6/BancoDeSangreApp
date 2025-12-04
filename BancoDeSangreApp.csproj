@@ -74,6 +74,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Business\AuditoriaBLL.cs" />
+    <Compile Include="Business\EntidadSaludBLL.cs" />
     <Compile Include="Business\InventarioBLL.cs" />
     <Compile Include="Business\MenuConfig.cs" />
     <Compile Include="Business\NotificacionesBLL.cs" />
@@ -139,6 +140,18 @@
     <Compile Include="Forms\FrmDonantes.Designer.cs">
       <DependentUpon>FrmDonantes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmEntidadesSalud.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmEntidadesSalud.Designer.cs">
+      <DependentUpon>FrmEntidadesSalud.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmEntidadSaludDetalle.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmEntidadSaludDetalle.Designer.cs">
+      <DependentUpon>FrmEntidadSaludDetalle.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmInventario.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -199,6 +212,7 @@
     <Compile Include="Forms\Reportes.Designer.cs">
       <DependentUpon>Reportes.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\EntidadSalud.cs" />
     <Compile Include="Models\SolicitudMedica.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Program.cs" />

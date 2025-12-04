@@ -63,7 +63,8 @@ namespace BancoDeSangreApp.Business
                     {
                         new FormularioMenu { Nombre = "FrmAuditoria", Icono = "fa-shield-alt", Texto = "Auditoría", Orden = 1 },
                         new FormularioMenu { Nombre = "FrmUsuarios", Icono = "fa-user-cog", Texto = "Usuarios", Orden = 2 },
-                        new FormularioMenu { Nombre = "FrmRoles", Icono = "fa-user-tag", Texto = "Roles", Orden = 3 }
+                        new FormularioMenu { Nombre = "FrmRoles", Icono = "fa-user-tag", Texto = "Roles", Orden = 3 },
+                        new FormularioMenu { Nombre = "FrmEntidadesSalud", Icono = "fa-hospital", Texto = "Entidades de Salud", Orden = 4 }
                     }
                 }
             }
