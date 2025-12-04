@@ -434,5 +434,10 @@ namespace BancoDeSangreApp.Forms
             _timerActualizacion?.Dispose();
             base.OnFormClosing(e);
         }
+
+        private void lblTiposBajos_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

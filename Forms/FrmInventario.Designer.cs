@@ -96,7 +96,7 @@
             this.lblUltimaActualizacion.ForeColor = System.Drawing.Color.White;
             this.lblUltimaActualizacion.Location = new System.Drawing.Point(12, 70);
             this.lblUltimaActualizacion.Name = "lblUltimaActualizacion";
-            this.lblUltimaActualizacion.Size = new System.Drawing.Size(200, 15);
+            this.lblUltimaActualizacion.Size = new System.Drawing.Size(209, 15);
             this.lblUltimaActualizacion.TabIndex = 4;
             this.lblUltimaActualizacion.Text = "Última actualización: --/--/---- --:--:--";
             // 
@@ -155,7 +155,7 @@
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(12, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(337, 37);
+            this.lblTitulo.Size = new System.Drawing.Size(330, 37);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "📦 Inventario de Sangre";
             // 
@@ -193,6 +193,7 @@
             this.lblTiposBajos.TabIndex = 1;
             this.lblTiposBajos.Text = "0";
             this.lblTiposBajos.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTiposBajos.Click += new System.EventHandler(this.lblTiposBajos_Click);
             // 
             // lblTiposBajosLabel
             // 
@@ -327,7 +328,7 @@
             this.lblTotalTipos.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotalTipos.Location = new System.Drawing.Point(10, 10);
             this.lblTotalTipos.Name = "lblTotalTipos";
-            this.lblTotalTipos.Size = new System.Drawing.Size(89, 19);
+            this.lblTotalTipos.Size = new System.Drawing.Size(95, 19);
             this.lblTotalTipos.TabIndex = 0;
             this.lblTotalTipos.Text = "Total tipos: 0";
             // 
@@ -383,7 +384,7 @@
             this.lblTotalAlertas.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotalAlertas.Location = new System.Drawing.Point(10, 10);
             this.lblTotalAlertas.Name = "lblTotalAlertas";
-            this.lblTotalAlertas.Size = new System.Drawing.Size(70, 19);
+            this.lblTotalAlertas.Size = new System.Drawing.Size(72, 19);
             this.lblTotalAlertas.TabIndex = 0;
             this.lblTotalAlertas.Text = "Alertas: 0";
             // 

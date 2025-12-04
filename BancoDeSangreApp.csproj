@@ -70,7 +70,6 @@
     <Compile Include="Business\InventarioBLL.cs" />
     <Compile Include="Business\MenuConfig.cs" />
     <Compile Include="Business\NotificacionesBLL.cs" />
-    <Compile Include="Business\PermisosBLL.cs" />
     <Compile Include="Business\SeguridadBLL.cs" />
     <Compile Include="Business\SolicitudMedicaBLL.cs" />
     <Compile Include="Business\UsuarioBLL.cs" />
