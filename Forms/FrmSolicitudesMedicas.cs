@@ -214,7 +214,7 @@ namespace BancoDeSangreApp.Forms
                     return;
                 }
 
-                // ✅ NUEVA VALIDACIÓN: Verificar disponibilidad en inventario
+                //Verificar disponibilidad en inventario
                 int idTipoSangre = Convert.ToInt32(cmbTipoSangre.SelectedValue);
                 int cantidadSolicitada = Convert.ToInt32(numCantidad.Value);
 
