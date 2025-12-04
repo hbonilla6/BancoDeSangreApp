@@ -171,10 +171,10 @@ namespace BancoDeSangreApp.Forms
             this.panelDonantes.Controls.Add(this.lblTotalDonantes);
             this.panelDonantes.Controls.Add(this.lblTituloDonantes);
             this.panelDonantes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panelDonantes.Padding = new System.Windows.Forms.Padding(10);
             this.panelDonantes.Location = new System.Drawing.Point(5, 5);
             this.panelDonantes.Margin = new System.Windows.Forms.Padding(5);
             this.panelDonantes.Name = "panelDonantes";
+            this.panelDonantes.Padding = new System.Windows.Forms.Padding(10);
             this.panelDonantes.Size = new System.Drawing.Size(235, 100);
             this.panelDonantes.TabIndex = 0;
             // 
@@ -183,10 +183,9 @@ namespace BancoDeSangreApp.Forms
             this.lblTotalDonantes.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTotalDonantes.Font = new System.Drawing.Font("Segoe UI", 28F, System.Drawing.FontStyle.Bold);
             this.lblTotalDonantes.ForeColor = System.Drawing.Color.White;
-            this.lblTotalDonaciones.Location = new System.Drawing.Point(10, 40);
+            this.lblTotalDonantes.Location = new System.Drawing.Point(10, 40);
             this.lblTotalDonantes.Name = "lblTotalDonantes";
-            this.lblTotalDonaciones.Size = new System.Drawing.Size(215, 50);
-            this.panelDonaciones.Padding = new System.Windows.Forms.Padding(10);
+            this.lblTotalDonantes.Size = new System.Drawing.Size(215, 50);
             this.lblTotalDonantes.TabIndex = 1;
             this.lblTotalDonantes.Text = "0";
             this.lblTotalDonantes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -194,14 +193,14 @@ namespace BancoDeSangreApp.Forms
             // lblTituloDonantes
             // 
             this.lblTituloDonantes.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTituloDonaciones.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
+            this.lblTituloDonantes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTituloDonantes.ForeColor = System.Drawing.Color.White;
-            this.lblTituloDonaciones.Location = new System.Drawing.Point(10, 10);
+            this.lblTituloDonantes.Location = new System.Drawing.Point(10, 10);
             this.lblTituloDonantes.Name = "lblTituloDonantes";
-            this.lblTituloDonaciones.Size = new System.Drawing.Size(215, 30);
+            this.lblTituloDonantes.Size = new System.Drawing.Size(215, 30);
             this.lblTituloDonantes.TabIndex = 0;
             this.lblTituloDonantes.Text = "👥 Total Donantes";
-            this.lblTituloDonaciones.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lblTituloDonantes.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelDonaciones
             // 
@@ -212,6 +211,7 @@ namespace BancoDeSangreApp.Forms
             this.panelDonaciones.Location = new System.Drawing.Point(250, 5);
             this.panelDonaciones.Margin = new System.Windows.Forms.Padding(5);
             this.panelDonaciones.Name = "panelDonaciones";
+            this.panelDonaciones.Padding = new System.Windows.Forms.Padding(10);
             this.panelDonaciones.Size = new System.Drawing.Size(235, 100);
             this.panelDonaciones.TabIndex = 1;
             // 
@@ -220,9 +220,9 @@ namespace BancoDeSangreApp.Forms
             this.lblTotalDonaciones.Dock = System.Windows.Forms.DockStyle.Fill;
             this.lblTotalDonaciones.Font = new System.Drawing.Font("Segoe UI", 28F, System.Drawing.FontStyle.Bold);
             this.lblTotalDonaciones.ForeColor = System.Drawing.Color.White;
-            this.lblTotalDonaciones.Location = new System.Drawing.Point(0, 23);
+            this.lblTotalDonaciones.Location = new System.Drawing.Point(10, 40);
             this.lblTotalDonaciones.Name = "lblTotalDonaciones";
-            this.lblTotalDonaciones.Size = new System.Drawing.Size(235, 77);
+            this.lblTotalDonaciones.Size = new System.Drawing.Size(215, 50);
             this.lblTotalDonaciones.TabIndex = 1;
             this.lblTotalDonaciones.Text = "0";
             this.lblTotalDonaciones.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -230,14 +230,14 @@ namespace BancoDeSangreApp.Forms
             // lblTituloDonaciones
             // 
             this.lblTituloDonaciones.Dock = System.Windows.Forms.DockStyle.Top;
-            this.lblTituloDonaciones.Font = new System.Drawing.Font("Segoe UI", 11F, System.Drawing.FontStyle.Bold);
+            this.lblTituloDonaciones.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTituloDonaciones.ForeColor = System.Drawing.Color.White;
-            this.lblTituloDonaciones.Location = new System.Drawing.Point(0, 0);
+            this.lblTituloDonaciones.Location = new System.Drawing.Point(10, 10);
             this.lblTituloDonaciones.Name = "lblTituloDonaciones";
-            this.lblTituloDonaciones.Size = new System.Drawing.Size(235, 23);
+            this.lblTituloDonaciones.Size = new System.Drawing.Size(215, 30);
             this.lblTituloDonaciones.TabIndex = 0;
             this.lblTituloDonaciones.Text = "💉 Unidades Disponibles";
-            this.lblTituloDonaciones.TextAlign = System.Drawing.ContentAlignment.TopCenter;
+            this.lblTituloDonaciones.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panelSolicitudes
             // 
