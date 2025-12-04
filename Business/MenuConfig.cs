@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Packaging;
 using System.Linq;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Rebar;
 
 namespace BancoDeSangreApp.Business
 {
     /// <summary>
-    /// Configuración de menú basada en categorías - Super simple de mantener
+    /// Configuración de menú basada en categorías con FontAwesome
     /// </summary>
     public static class MenuConfig
     {
         // ============================================
-        // AQUÍ DEFINES TODO EL MENÚ - FÁCIL Y RÁPIDO
+        // AQUÍ DEFINES TODO EL MENÚ CON FONTAWESOME
         // ============================================
         public static readonly Dictionary<string, CategoriaMenu> Categorias = new Dictionary<string, CategoriaMenu>
         {
@@ -21,7 +23,7 @@ namespace BancoDeSangreApp.Business
                     Orden = 1,
                     Formularios = new List<FormularioMenu>
                     {
-                        new FormularioMenu { Nombre = "FrmDashboard", Icono = "🏠", Texto = "Dashboard", Orden = 1 }
+                        new FormularioMenu { Nombre = "FrmDashboard", Icono = "fa-home", Texto = "Dashboard", Orden = 1 }
                     }
                 }
             },
@@ -32,11 +34,11 @@ namespace BancoDeSangreApp.Business
                     Orden = 2,
                     Formularios = new List<FormularioMenu>
                     {
-                        new FormularioMenu { Nombre = "FrmDonantes", Icono = "👥", Texto = "Donantes", Orden = 1 },
-                        new FormularioMenu { Nombre = "FrmDonaciones", Icono = "💉", Texto = "Donaciones", Orden = 2 },
-                        new FormularioMenu { Nombre = "FrmCentrosRecoleccion", Icono = "🏥", Texto = "Centros", Orden = 3 },
-                        new FormularioMenu { Nombre = "FrmInventario", Icono = "📦", Texto = "Inventario", Orden = 4 },
-                        new FormularioMenu { Nombre = "FrmSolicitudesMedicas", Icono = "📋", Texto = "Solicitudes", Orden = 5 }
+                        new FormularioMenu { Nombre = "FrmDonantes", Icono = "fa-users", Texto = "Donantes", Orden = 1 },
+                        new FormularioMenu { Nombre = "FrmDonaciones", Icono = "fa-hand-holding-medical", Texto = "Donaciones", Orden = 2 },
+                        new FormularioMenu { Nombre = "FrmCentrosRecoleccion", Icono = "fa-hospital", Texto = "Centros", Orden = 3 },
+                        new FormularioMenu { Nombre = "FrmInventario", Icono = "fa-boxes", Texto = "Inventario", Orden = 4 },
+                        new FormularioMenu { Nombre = "FrmSolicitudesMedicas", Icono = "fa-clipboard-list", Texto = "Solicitudes", Orden = 5 }
                     }
                 }
             },
@@ -47,7 +49,7 @@ namespace BancoDeSangreApp.Business
                     Orden = 3,
                     Formularios = new List<FormularioMenu>
                     {
-                        new FormularioMenu { Nombre = "FrmReportes", Icono = "📊", Texto = "Reportes", Orden = 1 }
+                        new FormularioMenu { Nombre = "FrmReportes", Icono = "fa-chart-bar", Texto = "Reportes", Orden = 1 }
                     }
                 }
             },
@@ -59,15 +61,16 @@ namespace BancoDeSangreApp.Business
                     RolRequerido = "Administrador",
                     Formularios = new List<FormularioMenu>
                     {
-                        new FormularioMenu { Nombre = "FrmAuditoria", Icono = "🔒", Texto = "Auditoría", Orden = 1 },
-                        new FormularioMenu { Nombre = "FrmUsuarios", Icono = "👨", Texto = "Usuarios", Orden = 2 }
+                        new FormularioMenu { Nombre = "FrmAuditoria", Icono = "fa-shield-alt", Texto = "Auditoría", Orden = 1 },
+                        new FormularioMenu { Nombre = "FrmUsuarios", Icono = "fa-user-cog", Texto = "Usuarios", Orden = 2 },
+                        new FormularioMenu { Nombre = "FrmRoles", Icono = "fa-user-tag", Texto = "Roles", Orden = 3 }
                     }
                 }
             }
         };
 
         // ============================================
-        // PERMISOS POR ROL - TAMBIÉN MUY SIMPLE
+        // PERMISOS POR ROL
         // ============================================
         public static readonly Dictionary<string, HashSet<string>> AccesoPorRol = new Dictionary<string, HashSet<string>>
         {
@@ -179,7 +182,7 @@ namespace BancoDeSangreApp.Business
     public class FormularioMenu
     {
         public string Nombre { get; set; }
-        public string Icono { get; set; }
+        public string Icono { get; set; } // Ahora contiene clases de FontAwesome
         public string Texto { get; set; }
         public int Orden { get; set; }
     }

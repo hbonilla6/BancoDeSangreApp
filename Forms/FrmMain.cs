@@ -1,5 +1,6 @@
 ﻿using BancoDeSangreApp.Business;
 using BancoDeSangreApp.Components;
+using FontAwesome.Sharp;
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
@@ -10,8 +11,8 @@ namespace BancoDeSangreApp.Forms
 {
     public partial class FrmMain : Form
     {
-        private Button btnActivo;
-        private Button btnAcercaDe;
+        private IconButton btnActivo;
+        private IconButton btnAcercaDe;
 
         public FrmMain()
         {
@@ -59,7 +60,7 @@ namespace BancoDeSangreApp.Forms
             // Obtener categorías disponibles
             var categorias = MenuConfig.ObtenerCategoriasDisponibles(usuario);
 
-            int posicionY = 10; // Empieza desde arriba del panel scroll
+            int posicionY = 10;
 
             foreach (var categoria in categorias)
             {
@@ -68,15 +69,19 @@ namespace BancoDeSangreApp.Forms
                 {
                     Name = $"panelCategoria_{categoria.Nombre}",
                     Location = new Point(0, posicionY),
-                    Width = panelMenuScroll.Width - 20, // Restar espacio del scroll
+                    Width = panelMenuScroll.Width - 20,
                     Height = 40,
                     Tag = false
                 };
 
-                // Botón de categoría (header colapsable)
-                var btnCategoria = new Button
+                // Botón de categoría (header colapsable) - AHORA ES IconButton
+                var btnCategoria = new IconButton
                 {
-                    Text = $"▶  {categoria.Nombre.ToUpper()}",
+                    Text = $"  {categoria.Nombre.ToUpper()}",
+                    IconChar = IconChar.ChevronRight,
+                    IconColor = Color.FromArgb(189, 195, 199),
+                    IconSize = 20,
+                    ImageAlign = ContentAlignment.MiddleLeft,
                     Location = new Point(0, 0),
                     Width = panelMenuScroll.Width - 20,
                     Height = 40,
@@ -85,7 +90,8 @@ namespace BancoDeSangreApp.Forms
                     ForeColor = Color.FromArgb(189, 195, 199),
                     BackColor = Color.FromArgb(44, 62, 80),
                     TextAlign = ContentAlignment.MiddleLeft,
-                    Padding = new Padding(15, 0, 0, 0),
+                    Padding = new Padding(35, 0, 0, 0),
+                    TextImageRelation = TextImageRelation.ImageBeforeText,
                     Tag = categoria
                 };
                 btnCategoria.FlatAppearance.BorderSize = 0;
@@ -115,10 +121,15 @@ namespace BancoDeSangreApp.Forms
                 int posY = 0;
                 foreach (var formulario in categoria.Formularios.OrderBy(f => f.Orden))
                 {
-                    var btnFormulario = new Button
+                    // AHORA USAMOS IconButton
+                    var btnFormulario = new IconButton
                     {
                         Name = $"btn{formulario.Nombre}",
-                        Text = $"{formulario.Icono}  {formulario.Texto}",
+                        Text = $"  {formulario.Texto}",
+                        IconChar = ObtenerIconChar(formulario.Icono),
+                        IconColor = Color.White,
+                        IconSize = 24,
+                        ImageAlign = ContentAlignment.MiddleLeft,
                         Location = new Point(0, posY),
                         Width = panelMenuScroll.Width - 20,
                         Height = 45,
@@ -126,8 +137,9 @@ namespace BancoDeSangreApp.Forms
                         Font = new Font("Segoe UI", 10F),
                         ForeColor = Color.White,
                         BackColor = Color.FromArgb(37, 46, 59),
-                        Padding = new Padding(35, 0, 0, 0),
+                        Padding = new Padding(45, 0, 0, 0),
                         TextAlign = ContentAlignment.MiddleLeft,
+                        TextImageRelation = TextImageRelation.ImageBeforeText,
                         Tag = formulario.Nombre
                     };
 
@@ -168,12 +180,38 @@ namespace BancoDeSangreApp.Forms
             AgregarBotonAcercaDe();
         }
 
-        private void ExpandirCategoria(Button btnCategoria, Panel panelFormularios, Panel panelCategoria, int alturaTotal)
+        /// <summary>
+        /// Convierte el nombre del icono FontAwesome a IconChar
+        /// </summary>
+        private IconChar ObtenerIconChar(string nombreIcono)
         {
-            // Cambiar icono
-            btnCategoria.Text = btnCategoria.Text.Replace("▶", "▼");
+            switch (nombreIcono)
+            {
+                case "fa-home": return IconChar.Home;
+                case "fa-users": return IconChar.Users;
+                case "fa-hand-holding-medical": return IconChar.HandHoldingMedical;
+                case "fa-syringe": return IconChar.Syringe;
+                case "fa-hospital": return IconChar.Hospital;
+                case "fa-boxes": return IconChar.Boxes;
+                case "fa-clipboard-list": return IconChar.ClipboardList;
+                case "fa-chart-bar": return IconChar.ChartBar;
+                case "fa-shield-alt": return IconChar.ShieldAlt;
+                case "fa-lock": return IconChar.Lock;
+                case "fa-user-cog": return IconChar.UserCog;
+                case "fa-user-tag": return IconChar.UserTag;
+                case "fa-cog": return IconChar.Cog;
+                case "fa-info-circle": return IconChar.InfoCircle;
+                case "fa-door-open": return IconChar.DoorOpen;
+                default: return IconChar.Circle;
+            }
+        }
 
-            // Marcar como expandido ANTES de la animación
+        private void ExpandirCategoria(IconButton btnCategoria, Panel panelFormularios, Panel panelCategoria, int alturaTotal)
+        {
+            // Cambiar icono a ChevronDown
+            btnCategoria.IconChar = IconChar.ChevronDown;
+
+            // Marcar como expandido
             panelCategoria.Tag = true;
 
             // Mostrar panel de formularios
@@ -183,7 +221,7 @@ namespace BancoDeSangreApp.Forms
             // Animación suave de expansión
             Timer timer = new Timer { Interval = 10 };
             int alturaObjetivo = alturaTotal;
-            int paso = Math.Max(alturaObjetivo / 15, 3); // Mínimo 3px por paso
+            int paso = Math.Max(alturaObjetivo / 15, 3);
 
             timer.Tick += (s, e) =>
             {
@@ -193,7 +231,6 @@ namespace BancoDeSangreApp.Forms
                     if (panelFormularios.Height > alturaObjetivo)
                         panelFormularios.Height = alturaObjetivo;
 
-                    // Actualizar altura del panel contenedor
                     panelCategoria.Height = btnCategoria.Height + panelFormularios.Height;
                     AjustarPosicionCategorias();
                 }
@@ -210,26 +247,24 @@ namespace BancoDeSangreApp.Forms
             timer.Start();
         }
 
-        private void ColapsarCategoria(Button btnCategoria, Panel panelFormularios, Panel panelCategoria)
+        private void ColapsarCategoria(IconButton btnCategoria, Panel panelFormularios, Panel panelCategoria)
         {
-            // Cambiar icono
-            btnCategoria.Text = btnCategoria.Text.Replace("▼", "▶");
+            // Cambiar icono a ChevronRight
+            btnCategoria.IconChar = IconChar.ChevronRight;
 
-            // Marcar como colapsado ANTES de la animación
+            // Marcar como colapsado
             panelCategoria.Tag = false;
 
             // Animación suave de colapso
             int alturaInicial = panelFormularios.Height;
             Timer timer = new Timer { Interval = 10 };
-            int paso = Math.Max(alturaInicial / 15, 3); // Mínimo 3px por paso
+            int paso = Math.Max(alturaInicial / 15, 3);
 
             timer.Tick += (s, e) =>
             {
                 if (panelFormularios.Height > paso)
                 {
                     panelFormularios.Height -= paso;
-
-                    // Actualizar altura del panel contenedor
                     panelCategoria.Height = btnCategoria.Height + panelFormularios.Height;
                     AjustarPosicionCategorias();
                 }
@@ -249,19 +284,17 @@ namespace BancoDeSangreApp.Forms
 
         private void AjustarPosicionCategorias()
         {
-            // Reposicionar todas las categorías después de expansión/colapso
-            int posicionY = 10; // CAMBIO: Empieza desde el inicio del panelMenuScroll
+            int posicionY = 10;
 
-            var panelesCategorias = panelMenuScroll.Controls // CAMBIO: panelMenuScroll
+            var panelesCategorias = panelMenuScroll.Controls
                 .OfType<Panel>()
                 .Where(p => p.Name != null && p.Name.StartsWith("panelCategoria_"))
                 .ToList();
 
-            // Ordenar por el orden original
             panelesCategorias.Sort((a, b) =>
             {
-                int indexA = panelMenuScroll.Controls.IndexOf(a); // CAMBIO: panelMenuScroll
-                int indexB = panelMenuScroll.Controls.IndexOf(b); // CAMBIO: panelMenuScroll
+                int indexA = panelMenuScroll.Controls.IndexOf(a);
+                int indexB = panelMenuScroll.Controls.IndexOf(b);
                 return indexB.CompareTo(indexA);
             });
 
@@ -274,38 +307,42 @@ namespace BancoDeSangreApp.Forms
 
         private void AgregarBotonAcercaDe()
         {
-            // Buscar si ya existe
-            var btnExistente = panelMenu.Controls // CAMBIO: Ahora en panelMenu, no panelMenuScroll
-                .OfType<Button>()
+            var btnExistente = panelMenu.Controls
+                .OfType<IconButton>()
                 .FirstOrDefault(b => b.Name == "btnAcercaDe");
 
             if (btnExistente != null)
                 return;
 
-            btnAcercaDe = new Button
+            btnAcercaDe = new IconButton
             {
                 Name = "btnAcercaDe",
-                Text = "ℹ️  Acerca de",
-                Dock = DockStyle.Bottom, // FIJO en la parte inferior
+                Text = "  Acerca de",
+                IconChar = IconChar.InfoCircle,
+                IconColor = Color.White,
+                IconSize = 24,
+                ImageAlign = ContentAlignment.MiddleLeft,
+                Dock = DockStyle.Bottom,
                 FlatStyle = FlatStyle.Flat,
                 Font = new Font("Segoe UI", 10F),
                 ForeColor = Color.White,
                 Height = 50,
                 Padding = new Padding(15, 0, 0, 0),
-                TextAlign = ContentAlignment.MiddleLeft
+                TextAlign = ContentAlignment.MiddleLeft,
+                TextImageRelation = TextImageRelation.ImageBeforeText
             };
 
             btnAcercaDe.FlatAppearance.BorderSize = 0;
             btnAcercaDe.Click += btnAcercaDe_Click;
             ConfigurarHoverBoton(btnAcercaDe);
 
-            panelMenu.Controls.Add(btnAcercaDe); // CAMBIO: En panelMenu
-            btnAcercaDe.BringToFront(); // Lo coloca antes de btnCerrarSesion
+            panelMenu.Controls.Add(btnAcercaDe);
+            btnAcercaDe.BringToFront();
         }
 
         private async void BtnFormulario_Click(object sender, EventArgs e)
         {
-            if (sender is Button btn && btn.Tag is string nombreFormulario)
+            if (sender is IconButton btn && btn.Tag is string nombreFormulario)
             {
                 if (!MenuConfig.TieneAcceso(Program.UsuarioActual, nombreFormulario))
                 {
@@ -323,8 +360,6 @@ namespace BancoDeSangreApp.Forms
             try
             {
                 panelContenedor.ShowLoading($"Cargando {nombreFormulario}...");
-
-                // Pequeño delay para mostrar el loading
                 await Task.Delay(100);
 
                 var tipo = Type.GetType($"BancoDeSangreApp.Forms.{nombreFormulario}");
@@ -334,13 +369,11 @@ namespace BancoDeSangreApp.Forms
                     throw new Exception($"No se encontró el formulario: {nombreFormulario}");
                 }
 
-                // ✅ CREAR EL FORMULARIO EN EL HILO PRINCIPAL (NO en Task.Run)
                 Form formulario = (Form)Activator.CreateInstance(tipo);
                 formulario.TopLevel = false;
                 formulario.FormBorderStyle = FormBorderStyle.None;
                 formulario.Dock = DockStyle.Fill;
 
-                // Limpiar controles anteriores
                 foreach (Control control in panelContenedor.Controls)
                 {
                     if (control is Form f)
@@ -351,7 +384,6 @@ namespace BancoDeSangreApp.Forms
                 }
                 panelContenedor.Controls.Clear();
 
-                // Agregar y mostrar el nuevo formulario
                 panelContenedor.Controls.Add(formulario);
                 formulario.Show();
 
@@ -385,7 +417,7 @@ namespace BancoDeSangreApp.Forms
             }
         }
 
-        private void ConfigurarHoverBoton(Button btn)
+        private void ConfigurarHoverBoton(IconButton btn)
         {
             if (btn == null) return;
 
@@ -408,42 +440,36 @@ namespace BancoDeSangreApp.Forms
 
         private async void FrmMain_Load(object sender, EventArgs e)
         {
-            // Obtener el primer formulario disponible
             var categorias = MenuConfig.ObtenerCategoriasDisponibles(Program.UsuarioActual);
 
             if (categorias.Any() && categorias[0].Formularios.Any())
             {
-                // Esperar un poco para que los controles se rendericen
                 await Task.Delay(100);
 
-                // Expandir automáticamente la primera categoría
-                var primerPanelCategoria = panelMenuScroll.Controls // CAMBIO: panelMenuScroll
+                var primerPanelCategoria = panelMenuScroll.Controls
                     .OfType<Panel>()
                     .Where(p => p.Name != null && p.Name.StartsWith("panelCategoria_"))
                     .FirstOrDefault();
 
                 if (primerPanelCategoria != null)
                 {
-                    var btnCategoria = primerPanelCategoria.Controls.OfType<Button>().FirstOrDefault();
-                    if (btnCategoria != null && btnCategoria.Text.Contains("▶"))
+                    var btnCategoria = primerPanelCategoria.Controls.OfType<IconButton>().FirstOrDefault();
+                    if (btnCategoria != null && btnCategoria.IconChar == IconChar.ChevronRight)
                     {
-                        // Simular click para expandir
                         btnCategoria.PerformClick();
                     }
                 }
 
-                // Cargar el primer formulario
                 var primerFormulario = categorias[0].Formularios[0].Nombre;
                 await AbrirFormularioPorNombre(primerFormulario);
 
-                // Activar el primer botón
                 await Task.Delay(200);
 
-                var primerBoton = panelMenuScroll.Controls // CAMBIO: panelMenuScroll
+                var primerBoton = panelMenuScroll.Controls
                     .OfType<Panel>()
                     .Where(p => p.Name != null && p.Name.StartsWith("panelCategoria_"))
                     .SelectMany(p => p.Controls.OfType<Panel>())
-                    .SelectMany(p => p.Controls.OfType<Button>())
+                    .SelectMany(p => p.Controls.OfType<IconButton>())
                     .FirstOrDefault(b => b.Tag is string tag && tag == primerFormulario);
 
                 if (primerBoton != null)
@@ -454,7 +480,7 @@ namespace BancoDeSangreApp.Forms
             }
         }
 
-        private void ActivarBoton(Button boton)
+        private void ActivarBoton(IconButton boton)
         {
             if (btnActivo != null)
             {
@@ -482,11 +508,9 @@ namespace BancoDeSangreApp.Forms
 
             if (resultado == DialogResult.Yes)
             {
-                // Registrar cierre de sesión en auditoría
                 try
                 {
                     var auditoriaBLL = new AuditoriaBLL();
-                    // Aquí podrías llamar a un método de registro
                 }
                 catch { }
 
