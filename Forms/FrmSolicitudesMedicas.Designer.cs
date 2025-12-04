@@ -79,7 +79,7 @@
             this.pnlTop.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlTop.Location = new System.Drawing.Point(0, 0);
             this.pnlTop.Name = "pnlTop";
-            this.pnlTop.Size = new System.Drawing.Size(1400, 80);
+            this.pnlTop.Size = new System.Drawing.Size(1370, 80);
             this.pnlTop.TabIndex = 0;
             // 
             // lblTitulo
@@ -89,7 +89,7 @@
             this.lblTitulo.ForeColor = System.Drawing.Color.White;
             this.lblTitulo.Location = new System.Drawing.Point(12, 20);
             this.lblTitulo.Name = "lblTitulo";
-            this.lblTitulo.Size = new System.Drawing.Size(346, 37);
+            this.lblTitulo.Size = new System.Drawing.Size(315, 37);
             this.lblTitulo.TabIndex = 0;
             this.lblTitulo.Text = "🏥 Solicitudes Médicas";
             // 
@@ -108,8 +108,8 @@
             // 
             this.splitContainer.Panel2.Controls.Add(this.grpListaSolicitudes);
             this.splitContainer.Panel2.Padding = new System.Windows.Forms.Padding(10, 10, 10, 50);
-            this.splitContainer.Size = new System.Drawing.Size(1400, 620);
-            this.splitContainer.SplitterDistance = 420;
+            this.splitContainer.Size = new System.Drawing.Size(1370, 619);
+            this.splitContainer.SplitterDistance = 411;
             this.splitContainer.TabIndex = 1;
             // 
             // grpNuevaSolicitud
@@ -132,7 +132,7 @@
             this.grpNuevaSolicitud.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.grpNuevaSolicitud.Location = new System.Drawing.Point(10, 10);
             this.grpNuevaSolicitud.Name = "grpNuevaSolicitud";
-            this.grpNuevaSolicitud.Size = new System.Drawing.Size(400, 600);
+            this.grpNuevaSolicitud.Size = new System.Drawing.Size(391, 599);
             this.grpNuevaSolicitud.TabIndex = 0;
             this.grpNuevaSolicitud.TabStop = false;
             this.grpNuevaSolicitud.Text = "Nueva Solicitud";
@@ -196,7 +196,7 @@
             this.lblObservaciones.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblObservaciones.Location = new System.Drawing.Point(20, 340);
             this.lblObservaciones.Name = "lblObservaciones";
-            this.lblObservaciones.Size = new System.Drawing.Size(113, 19);
+            this.lblObservaciones.Size = new System.Drawing.Size(112, 19);
             this.lblObservaciones.TabIndex = 9;
             this.lblObservaciones.Text = "Observaciones:";
             // 
@@ -226,11 +226,6 @@
             this.numCantidad.Enabled = false;
             this.numCantidad.Font = new System.Drawing.Font("Segoe UI", 10F);
             this.numCantidad.Location = new System.Drawing.Point(20, 230);
-            this.numCantidad.Maximum = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
             this.numCantidad.Minimum = new decimal(new int[] {
             1,
             0,
@@ -251,7 +246,7 @@
             this.lblCantidad.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblCantidad.Location = new System.Drawing.Point(20, 200);
             this.lblCantidad.Name = "lblCantidad";
-            this.lblCantidad.Size = new System.Drawing.Size(160, 19);
+            this.lblCantidad.Size = new System.Drawing.Size(147, 19);
             this.lblCantidad.TabIndex = 5;
             this.lblCantidad.Text = "Cantidad (unidades):";
             // 
@@ -273,7 +268,7 @@
             this.lblTipoSangre.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTipoSangre.Location = new System.Drawing.Point(20, 130);
             this.lblTipoSangre.Name = "lblTipoSangre";
-            this.lblTipoSangre.Size = new System.Drawing.Size(122, 19);
+            this.lblTipoSangre.Size = new System.Drawing.Size(115, 19);
             this.lblTipoSangre.TabIndex = 3;
             this.lblTipoSangre.Text = "Tipo de Sangre:";
             // 
@@ -292,7 +287,7 @@
             this.lblSolicitante.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblSolicitante.Location = new System.Drawing.Point(20, 60);
             this.lblSolicitante.Name = "lblSolicitante";
-            this.lblSolicitante.Size = new System.Drawing.Size(87, 19);
+            this.lblSolicitante.Size = new System.Drawing.Size(83, 19);
             this.lblSolicitante.TabIndex = 1;
             this.lblSolicitante.Text = "Solicitante:";
             // 
@@ -320,7 +315,7 @@
             this.grpListaSolicitudes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.grpListaSolicitudes.Location = new System.Drawing.Point(10, 10);
             this.grpListaSolicitudes.Name = "grpListaSolicitudes";
-            this.grpListaSolicitudes.Size = new System.Drawing.Size(956, 560);
+            this.grpListaSolicitudes.Size = new System.Drawing.Size(935, 559);
             this.grpListaSolicitudes.TabIndex = 0;
             this.grpListaSolicitudes.TabStop = false;
             this.grpListaSolicitudes.Text = "Lista de Solicitudes";
@@ -330,9 +325,9 @@
             this.dgvSolicitudes.BackgroundColor = System.Drawing.Color.White;
             this.dgvSolicitudes.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvSolicitudes.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dgvSolicitudes.Location = new System.Drawing.Point(3, 83);
+            this.dgvSolicitudes.Location = new System.Drawing.Point(3, 81);
             this.dgvSolicitudes.Name = "dgvSolicitudes";
-            this.dgvSolicitudes.Size = new System.Drawing.Size(950, 414);
+            this.dgvSolicitudes.Size = new System.Drawing.Size(929, 415);
             this.dgvSolicitudes.TabIndex = 2;
             this.dgvSolicitudes.SelectionChanged += new System.EventHandler(this.dgvSolicitudes_SelectionChanged);
             // 
@@ -343,9 +338,9 @@
             this.pnlFiltros.Controls.Add(this.cmbEstadoFiltro);
             this.pnlFiltros.Controls.Add(this.lblEstadoFiltro);
             this.pnlFiltros.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlFiltros.Location = new System.Drawing.Point(3, 23);
+            this.pnlFiltros.Location = new System.Drawing.Point(3, 21);
             this.pnlFiltros.Name = "pnlFiltros";
-            this.pnlFiltros.Size = new System.Drawing.Size(950, 60);
+            this.pnlFiltros.Size = new System.Drawing.Size(929, 60);
             this.pnlFiltros.TabIndex = 1;
             // 
             // btnBuscar
@@ -379,7 +374,7 @@
             this.lblEstadoFiltro.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblEstadoFiltro.Location = new System.Drawing.Point(20, 20);
             this.lblEstadoFiltro.Name = "lblEstadoFiltro";
-            this.lblEstadoFiltro.Size = new System.Drawing.Size(94, 19);
+            this.lblEstadoFiltro.Size = new System.Drawing.Size(86, 19);
             this.lblEstadoFiltro.TabIndex = 0;
             this.lblEstadoFiltro.Text = "Filtrar por: ";
             // 
@@ -390,9 +385,9 @@
             this.pnlAcciones.Controls.Add(this.btnRechazar);
             this.pnlAcciones.Controls.Add(this.btnAprobar);
             this.pnlAcciones.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlAcciones.Location = new System.Drawing.Point(3, 497);
+            this.pnlAcciones.Location = new System.Drawing.Point(3, 496);
             this.pnlAcciones.Name = "pnlAcciones";
-            this.pnlAcciones.Size = new System.Drawing.Size(950, 60);
+            this.pnlAcciones.Size = new System.Drawing.Size(929, 60);
             this.pnlAcciones.TabIndex = 0;
             // 
             // btnAtender
@@ -448,26 +443,26 @@
             this.pnlBottom.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
             this.pnlBottom.Controls.Add(this.lblTotalSolicitudes);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 700);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 699);
             this.pnlBottom.Name = "pnlBottom";
-            this.pnlBottom.Size = new System.Drawing.Size(1400, 50);
+            this.pnlBottom.Size = new System.Drawing.Size(1370, 50);
             this.pnlBottom.TabIndex = 2;
-            //
+            // 
             // lblTotalSolicitudes
-            //
+            // 
             this.lblTotalSolicitudes.AutoSize = true;
             this.lblTotalSolicitudes.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
             this.lblTotalSolicitudes.Location = new System.Drawing.Point(20, 15);
             this.lblTotalSolicitudes.Name = "lblTotalSolicitudes";
-            this.lblTotalSolicitudes.Size = new System.Drawing.Size(147, 19);
+            this.lblTotalSolicitudes.Size = new System.Drawing.Size(132, 19);
             this.lblTotalSolicitudes.TabIndex = 0;
             this.lblTotalSolicitudes.Text = "Total: 0 solicitudes";
-            //
+            // 
             // FrmSolicitudesMedicas
-            //
+            // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1400, 750);
+            this.ClientSize = new System.Drawing.Size(1370, 749);
             this.Controls.Add(this.splitContainer);
             this.Controls.Add(this.pnlBottom);
             this.Controls.Add(this.pnlTop);
@@ -493,6 +488,7 @@
             this.pnlBottom.ResumeLayout(false);
             this.pnlBottom.PerformLayout();
             this.ResumeLayout(false);
+
         }
 
         #endregion

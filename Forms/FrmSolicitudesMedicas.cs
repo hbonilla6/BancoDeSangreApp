@@ -191,7 +191,7 @@ namespace BancoDeSangreApp.Forms
         {
             try
             {
-                // Validaciones
+                // Validaciones existentes...
                 if (string.IsNullOrWhiteSpace(txtSolicitante.Text))
                 {
                     MessageBox.Show("Ingrese el nombre del solicitante.", "Validación",
@@ -214,13 +214,66 @@ namespace BancoDeSangreApp.Forms
                     return;
                 }
 
-                // Crear objeto solicitud
+                // ✅ NUEVA VALIDACIÓN: Verificar disponibilidad en inventario
+                int idTipoSangre = Convert.ToInt32(cmbTipoSangre.SelectedValue);
+                int cantidadSolicitada = Convert.ToInt32(numCantidad.Value);
+
+                string queryInventario = @"
+            SELECT ISNULL(CantidadUnidades, 0) AS Disponible
+            FROM InventarioSangre
+            WHERE IdTipoSangre = @IdTipoSangre 
+            AND IdEntidad = @IdEntidad";
+
+                var paramInventario = new System.Data.SqlClient.SqlParameter[]
+                {
+            new System.Data.SqlClient.SqlParameter("@IdTipoSangre", idTipoSangre),
+            new System.Data.SqlClient.SqlParameter("@IdEntidad", Program.UsuarioActual.IdEntidad)
+                };
+
+                DataTable dtInventario = ConexionDB.Instancia.EjecutarConsulta(queryInventario, paramInventario);
+
+                int disponible = 0;
+                if (dtInventario.Rows.Count > 0)
+                {
+                    disponible = Convert.ToInt32(dtInventario.Rows[0]["Disponible"]);
+                }
+
+                // Advertir si no hay stock suficiente
+                if (disponible == 0)
+                {
+                    var resultadoSinStock = MessageBox.Show(
+                        "⚠️ ADVERTENCIA: No hay unidades disponibles de este tipo de sangre.\n\n" +
+                        "¿Desea registrar la solicitud de todas formas?\n" +
+                        "(La solicitud quedará como PENDIENTE hasta que haya stock disponible)",
+                        "Sin Stock Disponible",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (resultadoSinStock == DialogResult.No)
+                        return;
+                }
+                else if (cantidadSolicitada > disponible)
+                {
+                    var resultadoInsuficiente = MessageBox.Show(
+                        $"⚠️ ADVERTENCIA: Stock insuficiente.\n\n" +
+                        $"Solicitado: {cantidadSolicitada} unidades\n" +
+                        $"Disponible: {disponible} unidades\n\n" +
+                        $"¿Desea registrar la solicitud de todas formas?",
+                        "Stock Insuficiente",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Warning);
+
+                    if (resultadoInsuficiente == DialogResult.No)
+                        return;
+                }
+
+                // Crear objeto solicitud (código existente)
                 SolicitudMedica solicitud = new SolicitudMedica
                 {
                     IdEntidad = Program.UsuarioActual.IdEntidad,
                     Solicitante = txtSolicitante.Text.Trim(),
-                    IdTipoSangre = Convert.ToInt32(cmbTipoSangre.SelectedValue),
-                    CantidadSolicitada = Convert.ToInt32(numCantidad.Value),
+                    IdTipoSangre = idTipoSangre,
+                    CantidadSolicitada = cantidadSolicitada,
                     Prioridad = cmbPrioridad.SelectedItem.ToString(),
                     Estado = "Pendiente",
                     Observaciones = txtObservaciones.Text.Trim(),
@@ -231,8 +284,21 @@ namespace BancoDeSangreApp.Forms
 
                 if (resultado.exito)
                 {
-                    MessageBox.Show(resultado.mensaje, "Éxito",
+                    string mensajeExito = resultado.mensaje;
+
+                    // Agregar nota sobre disponibilidad
+                    if (disponible == 0)
+                    {
+                        mensajeExito += "\n\n⚠️ NOTA: No hay stock disponible actualmente.";
+                    }
+                    else if (cantidadSolicitada > disponible)
+                    {
+                        mensajeExito += $"\n\n⚠️ NOTA: Solo hay {disponible} unidades disponibles.";
+                    }
+
+                    MessageBox.Show(mensajeExito, "Éxito",
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                     LimpiarFormulario();
                     HabilitarControles(false);
                     CargarSolicitudes();
@@ -371,18 +437,64 @@ namespace BancoDeSangreApp.Forms
 
         private void cmbTipoSangre_SelectedIndexChanged(object sender, EventArgs e)
         {
-            // Mostrar disponibilidad del tipo de sangre seleccionado
             if (cmbTipoSangre.SelectedIndex != -1)
             {
                 try
                 {
                     int idTipoSangre = Convert.ToInt32(cmbTipoSangre.SelectedValue);
-                    var stats = _inventarioBLL.ObtenerEstadisticasInventario(Program.UsuarioActual?.IdEntidad);
+                    int? idEntidad = Program.UsuarioActual?.IdEntidad;
 
-                    // Aquí podrías mostrar un label con la disponibilidad
-                    lblDisponibilidad.Text = $"Disponible en inventario";
+                    // Consulta para obtener disponibilidad específica del tipo de sangre
+                    string query = @"
+                SELECT ISNULL(CantidadUnidades, 0) AS Disponible
+                FROM InventarioSangre
+                WHERE IdTipoSangre = @IdTipoSangre 
+                AND IdEntidad = @IdEntidad";
+
+                    var parametros = new System.Data.SqlClient.SqlParameter[]
+                    {
+                new System.Data.SqlClient.SqlParameter("@IdTipoSangre", idTipoSangre),
+                new System.Data.SqlClient.SqlParameter("@IdEntidad", idEntidad)
+                    };
+
+                    DataTable dt = ConexionDB.Instancia.EjecutarConsulta(query, parametros);
+
+                    int disponible = 0;
+                    if (dt.Rows.Count > 0)
+                    {
+                        disponible = Convert.ToInt32(dt.Rows[0]["Disponible"]);
+                    }
+
+                    // Mostrar disponibilidad con colores
+                    if (disponible == 0)
+                    {
+                        lblDisponibilidad.Text = "⚠️ SIN STOCK DISPONIBLE";
+                        lblDisponibilidad.ForeColor = Color.Red;
+                        lblDisponibilidad.Font = new Font(lblDisponibilidad.Font, FontStyle.Bold);
+                    }
+                    else if (disponible < 3)
+                    {
+                        lblDisponibilidad.Text = $"⚠️ Stock crítico: {disponible} unidades";
+                        lblDisponibilidad.ForeColor = Color.Orange;
+                        lblDisponibilidad.Font = new Font(lblDisponibilidad.Font, FontStyle.Bold);
+                    }
+                    else
+                    {
+                        lblDisponibilidad.Text = $"✓ Disponible: {disponible} unidades";
+                        lblDisponibilidad.ForeColor = Color.Green;
+                        lblDisponibilidad.Font = new Font(lblDisponibilidad.Font, FontStyle.Regular);
+                    }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    lblDisponibilidad.Text = "Error al verificar disponibilidad";
+                    lblDisponibilidad.ForeColor = Color.Gray;
+                    System.Diagnostics.Debug.WriteLine($"Error: {ex.Message}");
+                }
+            }
+            else
+            {
+                lblDisponibilidad.Text = "";
             }
         }
 
