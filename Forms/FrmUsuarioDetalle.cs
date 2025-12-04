@@ -1,11 +1,13 @@
 ﻿using BancoDeSangreApp.Business;
 using BancoDeSangreApp.Models;
+using BancoDeSangreApp.Components;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace BancoDeSangreApp.Forms
@@ -24,30 +26,55 @@ namespace BancoDeSangreApp.Forms
             _esEdicion = idUsuario.HasValue;
         }
 
-        private void FrmUsuarioDetalle_Load(object sender, EventArgs e)
-        {
-            CargarRoles();
-
-            if (_esEdicion)
-            {
-                lblTitulo.Text = "✏️ Editar Usuario";
-                lblContrasena.Text = "Contraseña (dejar vacío para mantener actual)";
-                lblConfirmarContrasena.Text = "Confirmar Contraseña";
-                CargarDatosUsuario();
-            }
-            else
-            {
-                lblTitulo.Text = "📝 Nuevo Usuario";
-            }
-        }
-
-        private void CargarRoles()
+        private async void FrmUsuarioDetalle_Load(object sender, EventArgs e)
         {
             try
             {
-                List<Rol> roles = _usuariosBLL.ObtenerTodosLosRoles();
+                // ✅ Mostrar loading desde el inicio
+                this.ShowLoading("Cargando información...");
+
+                await Task.Run(() => System.Threading.Thread.Sleep(100));
+
+                await CargarRoles();
+
+                if (_esEdicion)
+                {
+                    lblTitulo.Text = "✏️ Editar Usuario";
+                    lblContrasena.Text = "Contraseña (dejar vacío para mantener actual)";
+                    lblConfirmarContrasena.Text = "Confirmar Contraseña";
+                    await CargarDatosUsuario();
+                }
+                else
+                {
+                    lblTitulo.Text = "📝 Nuevo Usuario";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar formulario:\n{ex.Message}", "Error",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                this.HideLoading();
+            }
+        }
+
+        private async Task CargarRoles()
+        {
+            try
+            {
+                List<Rol> roles = await Task.Run(() => _usuariosBLL.ObtenerTodosLosRoles());
 
                 chkListRoles.Items.Clear();
+
+                if (roles == null || roles.Count == 0)
+                {
+                    MessageBox.Show("No hay roles disponibles en el sistema.", "Advertencia",
+                        MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 foreach (var rol in roles)
                 {
                     chkListRoles.Items.Add(rol, false);
@@ -60,11 +87,11 @@ namespace BancoDeSangreApp.Forms
             }
         }
 
-        private void CargarDatosUsuario()
+        private async Task CargarDatosUsuario()
         {
             try
             {
-                var dtUsuarios = _usuariosBLL.ObtenerUsuarios(Program.UsuarioActual.IdEntidad);
+                var dtUsuarios = await Task.Run(() => _usuariosBLL.ObtenerUsuarios(Program.UsuarioActual.IdEntidad));
                 var row = dtUsuarios.AsEnumerable().FirstOrDefault(r => r.Field<int>("IdUsuario") == _idUsuario.Value);
 
                 if (row != null)
@@ -72,11 +99,14 @@ namespace BancoDeSangreApp.Forms
                     txtUsuario.Text = row.Field<string>("Usuario");
                     txtUsuario.Enabled = false;
                     txtNombreCompleto.Text = row.Field<string>("NombreCompleto");
-                    txtCorreo.Text = row.Field<string>("Correo");
-                    txtTelefono.Text = row.Field<string>("Telefono");
-                    chkActivo.Checked = row.Field<bool>("Activo");
+                    txtCorreo.Text = row.Field<string>("Correo") ?? "";
+                    txtTelefono.Text = row.Field<string>("Telefono") ?? "";
 
-                    var rolesUsuario = _usuariosBLL.ObtenerRolesUsuario(_idUsuario.Value);
+                    // ✅ ELIMINADO: Ya no cargamos ni mostramos el estado activo aquí
+
+                    // ✅ Cargar roles del usuario
+                    var rolesUsuario = await Task.Run(() => _usuariosBLL.ObtenerRolesUsuario(_idUsuario.Value));
+
                     for (int i = 0; i < chkListRoles.Items.Count; i++)
                     {
                         Rol rol = (Rol)chkListRoles.Items[i];
@@ -139,7 +169,7 @@ namespace BancoDeSangreApp.Forms
             txtConfirmarContrasena.UseSystemPasswordChar = !chkMostrarContrasenas.Checked;
         }
 
-        private void btnGuardar_Click(object sender, EventArgs e)
+        private async void btnGuardar_Click(object sender, EventArgs e)
         {
             try
             {
@@ -193,6 +223,11 @@ namespace BancoDeSangreApp.Forms
                     return;
                 }
 
+                // ✅ Mostrar loading al guardar
+                this.ShowLoading(_esEdicion ? "Actualizando usuario..." : "Creando usuario...");
+
+                await Task.Run(() => System.Threading.Thread.Sleep(200));
+
                 Usuario usuario = new Usuario
                 {
                     IdUsuario = _idUsuario ?? 0,
@@ -201,7 +236,7 @@ namespace BancoDeSangreApp.Forms
                     NombreCompleto = txtNombreCompleto.Text.Trim(),
                     Correo = txtCorreo.Text.Trim(),
                     Telefono = txtTelefono.Text.Trim(),
-                    Activo = chkActivo.Checked
+                    Activo = true  // ✅ SIEMPRE activo (tanto en nuevo como en edición no cambia)
                 };
 
                 int[] rolesIds = chkListRoles.CheckedItems.Cast<Rol>()
@@ -213,17 +248,32 @@ namespace BancoDeSangreApp.Forms
 
                 if (_esEdicion)
                 {
-                    (resultado, mensaje) = _usuariosBLL.ActualizarUsuario(usuario);
+                    // ✅ ACTUALIZAR USUARIO Y ROLES (sin cambiar el estado activo)
+                    var resultadoUpdate = await Task.Run(() => _usuariosBLL.ActualizarUsuario(usuario));
+                    resultado = resultadoUpdate.exito;
+                    mensaje = resultadoUpdate.mensaje;
 
-                    if (resultado && !string.IsNullOrWhiteSpace(txtContrasena.Text))
+                    if (resultado)
                     {
-                        _usuariosBLL.CambiarContrasena(_idUsuario.Value, txtContrasena.Text);
+                        // Actualizar roles
+                        await Task.Run(() => _usuariosBLL.ActualizarRolesUsuario(_idUsuario.Value, rolesIds));
+
+                        // Actualizar contraseña si se proporcionó
+                        if (!string.IsNullOrWhiteSpace(txtContrasena.Text))
+                        {
+                            await Task.Run(() => _usuariosBLL.CambiarContrasena(_idUsuario.Value, txtContrasena.Text));
+                        }
                     }
                 }
                 else
                 {
-                    (resultado, mensaje) = _usuariosBLL.RegistrarUsuario(usuario, txtContrasena.Text, rolesIds);
+                    // ✅ CREAR NUEVO USUARIO (siempre activo por defecto)
+                    var resultadoCreate = await Task.Run(() => _usuariosBLL.RegistrarUsuario(usuario, txtContrasena.Text, rolesIds));
+                    resultado = resultadoCreate.exito;
+                    mensaje = resultadoCreate.mensaje;
                 }
+
+                this.HideLoading();
 
                 if (resultado)
                 {
@@ -237,6 +287,7 @@ namespace BancoDeSangreApp.Forms
             }
             catch (Exception ex)
             {
+                this.HideLoading();
                 MessageBox.Show($"Error al guardar usuario:\n{ex.Message}", "Error",
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }

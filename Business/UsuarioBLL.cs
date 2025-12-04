@@ -16,6 +16,30 @@ namespace BancoDeSangreApp.Business
             _db = ConexionDB.Instancia;
         }
 
+        public void ActualizarRolesUsuario(int idUsuario, int[] rolesIds)
+        {
+            try
+            {
+                // Eliminar roles existentes
+                string queryEliminar = "DELETE FROM UsuarioRoles WHERE IdUsuario = @IdUsuario";
+                SqlParameter[] paramEliminar = { new SqlParameter("@IdUsuario", idUsuario) };
+                _db.EjecutarComando(queryEliminar, paramEliminar);
+
+                // Asignar nuevos roles
+                if (rolesIds != null && rolesIds.Length > 0)
+                {
+                    AsignarRoles(idUsuario, rolesIds);
+                }
+
+                RegistrarAuditoria(idUsuario, "UsuarioRoles", "UPDATE",
+                    idUsuario.ToString(), null, $"Roles actualizados: {string.Join(", ", rolesIds)}");
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error al actualizar roles: {ex.Message}", ex);
+            }
+        }
+
         public bool CambiarContrasena(int idUsuario, string nuevaContrasena)
         {
             try
@@ -215,22 +239,24 @@ namespace BancoDeSangreApp.Business
         {
             try
             {
+                // ✅ NOTA IMPORTANTE: Este método NO modifica el campo Activo
+                // El estado activo/inactivo SOLO se cambia con el método CambiarEstadoUsuario o EliminarUsuario
+
                 string query = @"
-                    UPDATE Usuarios 
-                    SET NombreCompleto = @NombreCompleto,
-                        Correo = @Correo,
-                        Telefono = @Telefono,
-                        Activo = @Activo,
-                        FechaModificacion = SYSDATETIME()
-                    WHERE IdUsuario = @IdUsuario";
+            UPDATE Usuarios 
+            SET NombreCompleto = @NombreCompleto,
+                Correo = @Correo,
+                Telefono = @Telefono,
+                FechaModificacion = SYSDATETIME()
+            WHERE IdUsuario = @IdUsuario";
 
                 SqlParameter[] parametros = {
-                    new SqlParameter("@IdUsuario", usuario.IdUsuario),
-                    new SqlParameter("@NombreCompleto", usuario.NombreCompleto),
-                    new SqlParameter("@Correo", (object)usuario.Correo ?? DBNull.Value),
-                    new SqlParameter("@Telefono", (object)usuario.Telefono ?? DBNull.Value),
-                    new SqlParameter("@Activo", usuario.Activo)
-                };
+            new SqlParameter("@IdUsuario", usuario.IdUsuario),
+            new SqlParameter("@NombreCompleto", usuario.NombreCompleto),
+            new SqlParameter("@Correo", (object)usuario.Correo ?? DBNull.Value),
+            new SqlParameter("@Telefono", (object)usuario.Telefono ?? DBNull.Value)
+            // ✅ ELIMINADO: @Activo - Ya no se actualiza aquí
+        };
 
                 int filasAfectadas = _db.EjecutarComando(query, parametros);
 
@@ -383,6 +409,41 @@ namespace BancoDeSangreApp.Business
             catch (Exception ex)
             {
                 System.Diagnostics.Debug.WriteLine($"Error en auditoría: {ex.Message}");
+            }
+        }
+
+        public (bool exito, string mensaje) CambiarEstadoUsuario(int idUsuario, bool nuevoEstado)
+        {
+            try
+            {
+                string query = @"
+            UPDATE Usuarios 
+            SET Activo = @Activo,
+                FechaModificacion = SYSDATETIME()
+            WHERE IdUsuario = @IdUsuario";
+
+                SqlParameter[] parametros = {
+            new SqlParameter("@IdUsuario", idUsuario),
+            new SqlParameter("@Activo", nuevoEstado)
+        };
+
+                int filasAfectadas = _db.EjecutarComando(query, parametros);
+
+                if (filasAfectadas > 0)
+                {
+                    string accion = nuevoEstado ? "activado" : "desactivado";
+                    RegistrarAuditoria(idUsuario, "Usuarios", "UPDATE",
+                        idUsuario.ToString(), null, $"Usuario {accion}");
+                    return (true, $"Usuario {accion} exitosamente.");
+                }
+                else
+                {
+                    return (false, "No se pudo cambiar el estado del usuario.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return (false, $"Error al cambiar estado del usuario: {ex.Message}");
             }
         }
 

@@ -38,8 +38,6 @@
             this.lblFortaleza = new System.Windows.Forms.Label();
             this.groupRoles = new System.Windows.Forms.GroupBox();
             this.chkListRoles = new System.Windows.Forms.CheckedListBox();
-            this.groupEstado = new System.Windows.Forms.GroupBox();
-            this.chkActivo = new System.Windows.Forms.CheckBox();
             this.panelBotones = new System.Windows.Forms.Panel();
             this.btnGuardar = new System.Windows.Forms.Button();
             this.btnCancelar = new System.Windows.Forms.Button();
@@ -48,7 +46,6 @@
             this.groupDatosPersonales.SuspendLayout();
             this.groupCredenciales.SuspendLayout();
             this.groupRoles.SuspendLayout();
-            this.groupEstado.SuspendLayout();
             this.panelBotones.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -77,7 +74,6 @@
             // 
             this.panelContenido.AutoScroll = true;
             this.panelContenido.BackColor = System.Drawing.Color.White;
-            this.panelContenido.Controls.Add(this.groupEstado);
             this.panelContenido.Controls.Add(this.groupRoles);
             this.panelContenido.Controls.Add(this.groupCredenciales);
             this.panelContenido.Controls.Add(this.groupDatosPersonales);
@@ -275,30 +271,6 @@
             this.chkListRoles.Size = new System.Drawing.Size(600, 76);
             this.chkListRoles.TabIndex = 0;
             // 
-            // groupEstado
-            // 
-            this.groupEstado.Controls.Add(this.chkActivo);
-            this.groupEstado.Font = new System.Drawing.Font("Segoe UI", 10F, System.Drawing.FontStyle.Bold);
-            this.groupEstado.Location = new System.Drawing.Point(23, 495);
-            this.groupEstado.Name = "groupEstado";
-            this.groupEstado.Size = new System.Drawing.Size(640, 70);
-            this.groupEstado.TabIndex = 3;
-            this.groupEstado.TabStop = false;
-            this.groupEstado.Text = "Estado";
-            // 
-            // chkActivo
-            // 
-            this.chkActivo.AutoSize = true;
-            this.chkActivo.Checked = true;
-            this.chkActivo.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkActivo.Font = new System.Drawing.Font("Segoe UI", 9F);
-            this.chkActivo.Location = new System.Drawing.Point(18, 30);
-            this.chkActivo.Name = "chkActivo";
-            this.chkActivo.Size = new System.Drawing.Size(215, 19);
-            this.chkActivo.TabIndex = 0;
-            this.chkActivo.Text = "✅ Usuario Activo (puede ingresar)";
-            this.chkActivo.UseVisualStyleBackColor = true;
-            // 
             // panelBotones
             // 
             this.panelBotones.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(236)))), ((int)(((byte)(240)))), ((int)(((byte)(241)))));
@@ -366,8 +338,6 @@
             this.groupCredenciales.ResumeLayout(false);
             this.groupCredenciales.PerformLayout();
             this.groupRoles.ResumeLayout(false);
-            this.groupEstado.ResumeLayout(false);
-            this.groupEstado.PerformLayout();
             this.panelBotones.ResumeLayout(false);
             this.ResumeLayout(false);
         }
@@ -395,8 +365,6 @@
         private System.Windows.Forms.CheckBox chkMostrarContrasenas;
         private System.Windows.Forms.GroupBox groupRoles;
         private System.Windows.Forms.CheckedListBox chkListRoles;
-        private System.Windows.Forms.GroupBox groupEstado;
-        private System.Windows.Forms.CheckBox chkActivo;
         private System.Windows.Forms.Panel panelBotones;
         private System.Windows.Forms.Button btnGuardar;
         private System.Windows.Forms.Button btnCancelar;

@@ -324,6 +324,9 @@ namespace BancoDeSangreApp.Forms
             {
                 panelContenedor.ShowLoading($"Cargando {nombreFormulario}...");
 
+                // Pequeño delay para mostrar el loading
+                await Task.Delay(100);
+
                 var tipo = Type.GetType($"BancoDeSangreApp.Forms.{nombreFormulario}");
 
                 if (tipo == null)
@@ -331,15 +334,13 @@ namespace BancoDeSangreApp.Forms
                     throw new Exception($"No se encontró el formulario: {nombreFormulario}");
                 }
 
-                Form formulario = await Task.Run(() =>
-                {
-                    Form frm = (Form)Activator.CreateInstance(tipo);
-                    frm.TopLevel = false;
-                    frm.FormBorderStyle = FormBorderStyle.None;
-                    frm.Dock = DockStyle.Fill;
-                    return frm;
-                });
+                // ✅ CREAR EL FORMULARIO EN EL HILO PRINCIPAL (NO en Task.Run)
+                Form formulario = (Form)Activator.CreateInstance(tipo);
+                formulario.TopLevel = false;
+                formulario.FormBorderStyle = FormBorderStyle.None;
+                formulario.Dock = DockStyle.Fill;
 
+                // Limpiar controles anteriores
                 foreach (Control control in panelContenedor.Controls)
                 {
                     if (control is Form f)
@@ -350,6 +351,7 @@ namespace BancoDeSangreApp.Forms
                 }
                 panelContenedor.Controls.Clear();
 
+                // Agregar y mostrar el nuevo formulario
                 panelContenedor.Controls.Add(formulario);
                 formulario.Show();
 
@@ -359,7 +361,7 @@ namespace BancoDeSangreApp.Forms
             {
                 panelContenedor.HideLoading();
                 MessageBox.Show(
-                    $"Error al cargar el formulario:\n{ex.Message}",
+                    $"Error al cargar el formulario:\n{ex.Message}\n\nStack Trace:\n{ex.StackTrace}",
                     "Error",
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error
